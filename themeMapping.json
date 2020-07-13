@@ -1,0 +1,15 @@
+{
+    "components": {
+        "Card":{
+            "meta":{},
+            "appearances": {
+                "filled":{
+                    "mapping":{
+                        "backgroundColor":"red"
+                    }
+                }
+            }
+        }
+
+    }
+}
