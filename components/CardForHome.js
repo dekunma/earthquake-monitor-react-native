@@ -7,7 +7,7 @@ import { Col, Row, Grid } from "react-native-easy-grid";
 
 //navigator
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 import moment from 'moment'
 
@@ -90,16 +90,28 @@ export default CardForHome = (props) => {
 		barTextContainer: {
 			marginTop:7,
 			marginBottom:7
+		},
+		rightMainText: {
+			color:props.color,
+			fontSize: 25,
+			fontWeight:'bold'
+		},
+		rightSubText: {
+			color: props.color,
+			fontSize: 13,
+			marginTop:12,
+			marginLeft:2
 		}
 	})
 
 	const styles = useStyleSheet(themedStyles);
+	const navigation = useNavigation();
 
 	return(
 			<React.Fragment>
 				<Layout style={styles.layout}>
 
-					<Card appearance='filled' style={styles.header}>
+					<Card appearance='filled' style={styles.header} onPress={() => navigation.navigate('Detail')}>
 						<Text style={styles.title}>Magnitude · {props.mag.toFixed(1)}</Text>
 						<Text style={styles.place}>{props.place}</Text>
 						<Text style={styles.time}>{moment(props.time).format('MMMM Do YYYY, h:mm:ss a')}</Text>
@@ -110,9 +122,22 @@ export default CardForHome = (props) => {
 						style={styles.card}
 						onPress={() => navigation.push('Detail')}
 					>
-						<Text style={styles.text}>Type: {props.type}</Text>
-						<Text style={styles.text}>Alert: {props.alert === null ? 'none' : props.alert}</Text>
-						<Text style={styles.text}>Status: {props.status}</Text>
+						<Grid>
+							<Col>
+								<Text style={styles.text}>Type: {props.type}</Text>
+								<Text style={styles.text}>Alert: {props.alert === null ? 'none' : props.alert}</Text>
+								<Text style={styles.text}>Status: {props.status}</Text>
+							</Col>
+							<Col >
+								<Layout style={{flexDirection:'row', marginTop:13}}>
+									<Text style={styles.rightMainText}>0</Text>
+									<Text style={styles.rightSubText}>Intensity (lv 0, no feeling)</Text>
+								</Layout>
+								
+								
+							</Col>
+						</Grid>
+						
 						<Grid style={styles.barTextContainer}>
 							<Col><Text style={styles.barText}>Tiny</Text></Col>
 							<Col><Text style={styles.barText}>Small</Text></Col>
@@ -136,17 +161,6 @@ export default CardForHome = (props) => {
 				
 	) 
 }
-
-
-// export default class CardForHome extends React.Component {
-// 	constructor(props) {
-// 		super(props)
-// 	}
-
-// 	render(){
-// 		return(<InnerCard {...this.props} />)
-// 	}
-// }
 
 
 

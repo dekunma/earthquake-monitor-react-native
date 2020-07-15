@@ -7,15 +7,16 @@ import axios from 'axios'
 //Ui Kitten
 import { Text, TopNavigation, Icon, MenuItem, OverflowMenu, TopNavigationAction, Layout } from '@ui-kitten/components';
 
+//screens
 import CardForHome from '../components/CardForHome'
+
+//cache
+import { Cache } from "react-native-cache";
+import AsyncStorage from '@react-native-community/async-storage';
 
 const SearchIcon = (props) => (
 	<Icon {...props} name='search-outline' />
 )
-
-const MenuIcon = (props) => (
-  <Icon {...props} name='more-vertical'/>
-);
 
 export default About = () => {
 
@@ -66,6 +67,7 @@ export default About = () => {
 					const data = r.data.features
 					setData(data)
 					setLoading(false)
+					cache.set("data", data);
 			})
 			.catch(e => {
 					console.log('error',e)
@@ -74,7 +76,19 @@ export default About = () => {
 		}
 
     React.useEffect(() => {
-			getData()
+			const cacheData = cache.get("data")
+			setTimeout(() => {
+				if(cacheData === null || cacheData._W === undefined || cacheData._W === null) {
+					getData()
+				}
+				else {
+					setData(cacheData._W)
+					setLoading(false)
+					getData()
+				}
+			}, 10)
+
+			
     }, [])
 
     return(
@@ -145,3 +159,11 @@ const colors = {
 	yellow: '#F7CE45',
 	orange: '#EC6751'
 }
+
+const cache = new Cache({
+    namespace: "earthquakeApp",
+    policy: {
+        maxEntries: 5000
+    },
+    backend: AsyncStorage
+});
