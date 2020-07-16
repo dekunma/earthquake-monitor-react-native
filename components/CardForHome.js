@@ -11,10 +11,14 @@ import { useNavigation } from '@react-navigation/native';
 
 import moment from 'moment'
 
+import { useDispatch } from 'react-redux'
+import testChangePlace from '../actions/testChangePlace'
+
 const Stack = createStackNavigator();
 
 export default CardForHome = (props) => {
 
+	const dispatch = useDispatch()
 	
 	const themedStyles = StyleService.create({
 		layout: {
@@ -120,7 +124,10 @@ export default CardForHome = (props) => {
 					<Card 
 						appearance='filled' 
 						style={styles.card}
-						onPress={() => navigation.push('Detail')}
+						onPress={() => {
+							navigation.push('Detail')
+							dispatch(testChangePlace(props.place))
+						}}
 					>
 						<Grid>
 							<Col>

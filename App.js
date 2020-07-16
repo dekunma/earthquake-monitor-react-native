@@ -15,39 +15,46 @@ import { CardStyleInterpolators } from '@react-navigation/stack';
 import BottomNavigation from './components/BottomNav'
 import DetailScreen from './screens/Detail'
 
+//redux
+import { Provider } from "react-redux";
+import store from './store'
+
 const Stack = createStackNavigator();
 
 const App = () => {
 
     return(
         <>
-					<IconRegistry icons={EvaIconsPack} />
-					<ApplicationProvider 
-							{...eva} 
-							theme={eva.light}
-							// customMapping={mapping}
-					>
-							<NavigationContainer>
-									<Stack.Navigator 
-											initialRouteName="Main" 
-											screenOptions={{
-													headerShown: false,
-												}}
-									>
-											<Stack.Screen 
-													name="Main" 
-													component={BottomNavigation}
-											/>
-											<Stack.Screen 
-													name="Detail" 
-													component={DetailScreen} 
-													options={{
-															cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-														}}
-											/>
-									</Stack.Navigator>
-							</NavigationContainer>
-					</ApplicationProvider>
+					<Provider store={store}>
+						<IconRegistry icons={EvaIconsPack} />
+						<ApplicationProvider 
+								{...eva} 
+								theme={eva.light}
+								// customMapping={mapping}
+						>
+								<NavigationContainer>
+										<Stack.Navigator 
+												initialRouteName="Main" 
+												screenOptions={{
+														headerShown: false,
+													}}
+										>
+												<Stack.Screen 
+														name="Main" 
+														component={BottomNavigation}
+												/>
+												<Stack.Screen 
+														name="Detail" 
+														component={DetailScreen} 
+														options={{
+																cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+															}}
+												/>
+										</Stack.Navigator>
+								</NavigationContainer>
+						</ApplicationProvider>
+					</Provider>
+					
         </>
     )
 }
