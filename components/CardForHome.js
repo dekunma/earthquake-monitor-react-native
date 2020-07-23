@@ -11,8 +11,10 @@ import { useNavigation } from '@react-navigation/native';
 
 import moment from 'moment'
 
+//redux
 import { useDispatch } from 'react-redux'
-import testChangePlace from '../actions/testChangePlace'
+import handleChangeDetail from '../actions/handleChangeDetail'
+import handleChangeGeometry from '../actions/handleChangeGeometry'
 
 const Stack = createStackNavigator();
 
@@ -111,11 +113,17 @@ export default CardForHome = (props) => {
 	const styles = useStyleSheet(themedStyles);
 	const navigation = useNavigation();
 
+	const navigateToDetail = () => {
+		navigation.push('Detail')
+		dispatch(handleChangeDetail(props.details))
+		dispatch(handleChangeGeometry(props.geometry))
+	}
+
 	return(
 			<React.Fragment>
 				<Layout style={styles.layout}>
 
-					<Card appearance='filled' style={styles.header} onPress={() => navigation.navigate('Detail')}>
+					<Card appearance='filled' style={styles.header} onPress={() => navigateToDetail()}>
 						<Text style={styles.title}>Magnitude · {props.mag.toFixed(1)}</Text>
 						<Text style={styles.place}>{props.place}</Text>
 						<Text style={styles.time}>{moment(props.time).format('MMMM Do YYYY, h:mm:ss a')}</Text>
@@ -124,10 +132,7 @@ export default CardForHome = (props) => {
 					<Card 
 						appearance='filled' 
 						style={styles.card}
-						onPress={() => {
-							navigation.push('Detail')
-							dispatch(testChangePlace(props.place))
-						}}
+						onPress={() => navigateToDetail()}
 					>
 						<Grid>
 							<Col>

@@ -5777,6 +5777,11 @@ react-native-iphone-x-helper@^1.2.1:
   resolved "https://registry.npm.taobao.org/react-native-iphone-x-helper/download/react-native-iphone-x-helper-1.2.1.tgz#645e2ffbbb49e80844bb4cbbe34a126fda1e6772"
   integrity sha1-ZF4v+7tJ6AhEu0y740oSb9oeZ3I=
 
+react-native-linear-gradient@^2.5.6:
+  version "2.5.6"
+  resolved "https://registry.npm.taobao.org/react-native-linear-gradient/download/react-native-linear-gradient-2.5.6.tgz#96215cbc5ec7a01247a20890888aa75b834d44a0"
+  integrity sha1-liFcvF7HoBJHogiQiIqnW4NNRKA=
+
 react-native-progress@^4.1.2:
   version "4.1.2"
   resolved "https://registry.npm.taobao.org/react-native-progress/download/react-native-progress-4.1.2.tgz#ffb2264ddfeba409c730e36a9791bb7bbe07a00d"
@@ -5808,6 +5813,11 @@ react-native-screens@^2.9.0:
   version "2.9.0"
   resolved "https://registry.npm.taobao.org/react-native-screens/download/react-native-screens-2.9.0.tgz#ead2843107ba00fee259aa377582e457c74f1f3b"
   integrity sha1-6tKEMQe6AP7iWao3dYLkV8dPHzs=
+
+react-native-skeleton-placeholder@^2.0.7:
+  version "2.0.7"
+  resolved "https://registry.npm.taobao.org/react-native-skeleton-placeholder/download/react-native-skeleton-placeholder-2.0.7.tgz#a804358b6999a8ed05c35ef2e7ba1c53b50a9426"
+  integrity sha1-qAQ1i2mZqO0Fw17y57ocU7UKlCY=
 
 react-native-svg@^12.1.0:
   version "12.1.0"

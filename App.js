@@ -47,7 +47,13 @@ const App = () => {
 														name="Detail" 
 														component={DetailScreen} 
 														options={{
-																cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+																cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+																gestureDirection: "vertical",
+																gestureEnabled:true,
+																transitionSpec: {
+																	open:animationConfig,
+																	close:animationConfig
+																}
 															}}
 												/>
 										</Stack.Navigator>
@@ -57,6 +63,18 @@ const App = () => {
 					
         </>
     )
+}
+
+const animationConfig = {
+	animation: 'spring',
+  config: {
+    stiffness: 1000,
+    damping: 500,
+    mass: 3,
+    overshootClamping: true,
+    restDisplacementThreshold: 0.01,
+    restSpeedThreshold: 0.01,
+  },
 }
 
 export default App

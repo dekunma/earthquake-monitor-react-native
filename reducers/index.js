@@ -1,6 +1,8 @@
 import { combineReducers } from "redux";
-import testPlaceReducer from './testPlaceReducer'
+import detailReducer from './detailReducer'
+import geometryReducer from './geometryReducer'
 
 export default combineReducers({
-    place:testPlaceReducer
+    details:detailReducer,
+    geometry:geometryReducer
 });

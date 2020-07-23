@@ -7,8 +7,9 @@ import axios from 'axios'
 //Ui Kitten
 import { Text, TopNavigation, Icon, MenuItem, OverflowMenu, TopNavigationAction, Layout } from '@ui-kitten/components';
 
-//screens
+//screens & components
 import CardForHome from '../components/CardForHome'
+import Loading from '../screens/Loading'
 
 //cache
 import { Cache } from "react-native-cache";
@@ -107,8 +108,8 @@ export default About = () => {
 							>
 								<Layout style={{height:'100%'}} level='2'>
 									{loading
-										? <Text>loading</Text>
-										:
+										? <Loading />
+										: 
 										data.map(elem => {
 											const mag = elem.properties.mag
 											var color
@@ -139,6 +140,8 @@ export default About = () => {
 													type={elem.properties.type}
 													alert={elem.properties.alert}
 													status={elem.properties.status}
+													details={elem.properties}
+													geometry={elem.geometry}
 												/>
 											)
 											
