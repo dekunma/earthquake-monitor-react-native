@@ -15,6 +15,7 @@ import moment from 'moment'
 import { useDispatch } from 'react-redux'
 import handleChangeDetail from '../actions/handleChangeDetail'
 import handleChangeGeometry from '../actions/handleChangeGeometry'
+import handleChangeColor from '../actions/handleChangeColor'
 
 const Stack = createStackNavigator();
 
@@ -107,6 +108,13 @@ export default CardForHome = (props) => {
 			fontSize: 13,
 			marginTop:12,
 			marginLeft:2
+		},
+		rightSubNum: {
+			color: props.color,
+			fontSize: 13,
+			marginTop:12,
+			marginLeft:2,
+			fontWeight:'bold'
 		}
 	})
 
@@ -117,6 +125,7 @@ export default CardForHome = (props) => {
 		navigation.push('Detail')
 		dispatch(handleChangeDetail(props.details))
 		dispatch(handleChangeGeometry(props.geometry))
+		dispatch(handleChangeColor(props.color))
 	}
 
 	return(
@@ -142,8 +151,9 @@ export default CardForHome = (props) => {
 							</Col>
 							<Col >
 								<Layout style={{flexDirection:'row', marginTop:13}}>
-									<Text style={styles.rightMainText}>0</Text>
-									<Text style={styles.rightSubText}>Intensity (lv 0, no feeling)</Text>
+									<Text style={styles.rightMainText}>{props.sig}</Text>
+									<Text style={styles.rightSubNum}>/100</Text>
+									<Text style={styles.rightSubText}> Significance</Text>
 								</Layout>
 								
 								

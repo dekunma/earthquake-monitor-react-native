@@ -47,9 +47,7 @@ const App = () => {
 														name="Detail" 
 														component={DetailScreen} 
 														options={{
-																cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
-																gestureDirection: "vertical",
-																gestureEnabled:true,
+																cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
 																transitionSpec: {
 																	open:animationConfig,
 																	close:animationConfig

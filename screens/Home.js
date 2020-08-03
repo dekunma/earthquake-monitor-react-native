@@ -112,6 +112,7 @@ export default About = () => {
 										: 
 										data.map(elem => {
 											const mag = elem.properties.mag
+											var sig = elem.properties.sig
 											var color
 											if(mag < 1) {
 												color = colors.grey
@@ -129,6 +130,8 @@ export default About = () => {
 												color = colors.yellow
 											}
 											else color = colors.orange
+											
+											sig /= 10
 
 											return(
 												<CardForHome 
@@ -140,6 +143,7 @@ export default About = () => {
 													type={elem.properties.type}
 													alert={elem.properties.alert}
 													status={elem.properties.status}
+													sig={sig}
 													details={elem.properties}
 													geometry={elem.geometry}
 												/>
