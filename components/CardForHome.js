@@ -3,10 +3,9 @@ import React from 'react'
 //ui kitten
 import { Card, Text, Layout, StyleService, useStyleSheet  } from '@ui-kitten/components'
 import * as Progress from 'react-native-progress';
-import { Col, Row, Grid } from "react-native-easy-grid";
+import { Col, Grid } from "react-native-easy-grid";
 
 //navigator
-import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 
 import moment from 'moment'
@@ -16,8 +15,6 @@ import { useDispatch } from 'react-redux'
 import handleChangeDetail from '../actions/handleChangeDetail'
 import handleChangeGeometry from '../actions/handleChangeGeometry'
 import handleChangeColor from '../actions/handleChangeColor'
-
-const Stack = createStackNavigator();
 
 export default CardForHome = (props) => {
 

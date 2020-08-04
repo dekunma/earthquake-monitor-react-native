@@ -15,6 +15,8 @@ import Loading from '../screens/Loading'
 import { Cache } from "react-native-cache";
 import AsyncStorage from '@react-native-community/async-storage';
 
+import { useNavigation } from '@react-navigation/native';
+
 const SearchIcon = (props) => (
 	<Icon {...props} name='search-outline' />
 )
@@ -23,9 +25,10 @@ export default About = () => {
 
     const [ data, setData ] = React.useState([])
 		const [ loading, setLoading ] = React.useState(true)
-		const [ menuVisible, setMenuVisible ] = React.useState(false);
+		const [ menuVisible, setMenuVisible ] = React.useState(false)
+		const [ refreshing, setRefreshing ] = React.useState(false)
 
-		const [ refreshing, setRefreshing ] = React.useState(false);
+		const navigation = useNavigation();
 
 		const onRefresh = React.useCallback(() => {
 			setRefreshing(true);
@@ -44,9 +47,13 @@ export default About = () => {
 		const toggleMenu = () => {
 			setMenuVisible(!menuVisible);
 		};
+
+		const navigateToSearch = () => {
+			navigation.push('Search')
+		}
 		
 		const renderMenuAction = () => (
-			<TopNavigationAction icon={SearchIcon} onPress={toggleMenu}/>
+			<TopNavigationAction icon={SearchIcon} onPress={navigateToSearch}/>
 		);
 		
 		const renderRightActions = () => (
@@ -87,9 +94,7 @@ export default About = () => {
 					setLoading(false)
 					getData()
 				}
-			}, 10)
-
-			
+			}, 100)
     }, [])
 
     return(

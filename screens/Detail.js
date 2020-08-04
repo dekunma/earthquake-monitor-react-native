@@ -22,126 +22,126 @@ const BackIcon = (props) => (
 export default Detail = (props) => {
 
     const details = useSelector(state => state.details)
-		const geometry = useSelector(state => state.geometry)
-		const color = useSelector(state => state.color)
-		
-		const [ lat, setLat ] = React.useState(0)
-		const [ long, setLong ] = React.useState(0)
-		const [ depth, setDepth ] = React.useState(0)
+	const geometry = useSelector(state => state.geometry)
+	const color = useSelector(state => state.color)
+	
+	const [ lat, setLat ] = React.useState(0)
+	const [ long, setLong ] = React.useState(0)
+	const [ depth, setDepth ] = React.useState(0)
 
-		const themedStyles = StyleService.create({
-			header: {
-				position:'absolute',
-				bottom:198,
-				backgroundColor:color,
-				borderBottomEndRadius: 0,
-				borderBottomStartRadius: 0,
-				marginLeft:15,
-				width:'92%',
-				zIndex:100,
-				shadowColor: "#000",
-				shadowOffset: {
-					width: 0,
-					height: 3,
-				},
-				shadowOpacity: 0.27,
-				shadowRadius: 4.65,
-				
-				elevation: 6,
+	const themedStyles = StyleService.create({
+		header: {
+			position:'absolute',
+			bottom:208,
+			backgroundColor:color,
+			borderBottomEndRadius: 0,
+			borderBottomStartRadius: 0,
+			marginLeft:15,
+			width:'92%',
+			zIndex:100,
+			shadowColor: "#000",
+			shadowOffset: {
+				width: 0,
+				height: 3,
 			},
-			title:{
-				color:'white',
-				fontSize:13
+			shadowOpacity: 0.27,
+			shadowRadius: 4.65,
+			
+			elevation: 6,
+		},
+		title:{
+			color:'white',
+			fontSize:13
+		},
+		body: {
+			position:'absolute',
+			bottom:70,
+			borderTopEndRadius:0,
+			backgroundColor:color,
+			borderTopStartRadius:0,
+			marginLeft:15,
+			width:'92%',
+			zIndex:99,
+			shadowColor: "#000",
+			shadowOffset: {
+				width: 0,
+				height: 0,
 			},
-			body: {
-				position:'absolute',
-				bottom:60,
-				borderTopEndRadius:0,
-				backgroundColor:color,
-				borderTopStartRadius:0,
-				marginLeft:15,
-				width:'92%',
-				zIndex:99,
-				shadowColor: "#000",
-				shadowOffset: {
-					width: 0,
-					height: 0,
-				},
-				shadowOpacity: 0.27,
-				shadowRadius: 4.65,
-				
-				elevation: 6,
+			shadowOpacity: 0.27,
+			shadowRadius: 4.65,
+			
+			elevation: 6,
+		},
+		bodyTitle: {
+			color:'white',
+			fontSize: 18,
+			fontWeight:'bold'
+		},
+		bodySub: {
+			color:'white',
+			fontSize: 15,
+		},
+		footer: {
+			position:'absolute',
+			bottom:20,
+			borderTopEndRadius:0,
+			borderTopStartRadius:0,
+			backgroundColor:'white',
+			marginLeft:15,
+			width:'92%',
+			zIndex:99,
+			shadowColor: "#000",
+			shadowOffset: {
+				width: 0,
+				height: 0,
 			},
-			bodyTitle: {
-				color:'white',
-				fontSize: 18,
-				fontWeight:'bold'
-			},
-			bodySub: {
-				color:'white',
-				fontSize: 15,
-			},
-			footer: {
-				position:'absolute',
-				bottom:20,
-				borderTopEndRadius:0,
-				borderTopStartRadius:0,
-				backgroundColor:'white',
-				marginLeft:15,
-				width:'92%',
-				zIndex:99,
-				shadowColor: "#000",
-				shadowOffset: {
-					width: 0,
-					height: 0,
-				},
-				shadowOpacity: 0.27,
-				shadowRadius: 4.65,
-				
-				elevation: 6,
-			},
-			footerText: {
-				fontSize:13
-			}
-		})
-
-		const styles = useStyleSheet(themedStyles);
-
-    React.useEffect(() => {
-			setLat(geometry.coordinates[1])
-			setLong(geometry.coordinates[0])
-			setDepth(geometry.coordinates[2])
-		}, [])
-
-		const BackAction = () => (
-			<TopNavigationAction 
-				icon={BackIcon}
-				onPress={ev => props.navigation.goBack()}
-			/>
-		);
-
-		const RenderCard = () => {
-			return(
-				<React.Fragment>
-					<Card appearance='filled' style={styles.header}>
-						<Text style={styles.title}>{details.title}</Text>
-					</Card>
-
-					<Card appearance='filled' style={styles.body}>
-						<Text style={styles.bodyTitle}>{details.mag > 7 ? 'May Cause Danger':'No Danger'}</Text> 
-						<Text style={styles.bodySub}>Based on earthquake data, we determined that {details.mag > 7 ? 'derious damage might occur.':'no serious damage might occur.'}</Text> 
-						<Text style={styles.bodySub}>Depth: {depth} km</Text> 
-						<Text style={styles.bodySub}>Maximum Intensity: {details.mmi === null ? 0 : details.mmi} Gal</Text> 
-						<Text style={styles.bodySub}>Coordinates: ({lat}, {long})</Text>
-					</Card>
-
-					<Card appearance='filled' style={styles.footer}>
-						<Text style={styles.footerText}>Updated At {moment(details.updated).format('MMMM Do YYYY, h:mm:ss a')}</Text>
-					</Card>
-				</React.Fragment>
-				
-			)
+			shadowOpacity: 0.27,
+			shadowRadius: 4.65,
+			
+			elevation: 6,
+		},
+		footerText: {
+			fontSize:13
 		}
+	})
+
+	const styles = useStyleSheet(themedStyles);
+
+	React.useEffect(() => {
+		setLat(geometry.coordinates[1])
+		setLong(geometry.coordinates[0])
+		setDepth(geometry.coordinates[2])
+	}, [])
+
+	const BackAction = () => (
+		<TopNavigationAction 
+			icon={BackIcon}
+			onPress={ev => props.navigation.goBack()}
+		/>
+	);
+
+	const RenderCard = () => {
+		return(
+			<React.Fragment>
+				<Card appearance='filled' style={styles.header}>
+					<Text style={styles.title}>{details.title}</Text>
+				</Card>
+
+				<Card appearance='filled' style={styles.body}>
+					<Text style={styles.bodyTitle}>{details.mag > 7 ? 'May Cause Danger':'No Danger'}</Text> 
+					<Text style={styles.bodySub}>Based on earthquake data, we determined that {details.mag > 7 ? 'derious damage might occur.':'no serious damage might occur.'}</Text> 
+					<Text style={styles.bodySub}>Depth: {depth} km</Text> 
+					<Text style={styles.bodySub}>Maximum Intensity: {details.mmi === null ? 0 : details.mmi} Gal</Text> 
+					<Text style={styles.bodySub}>Coordinates: ({lat}, {long})</Text>
+				</Card>
+
+				<Card appearance='filled' style={styles.footer}>
+					<Text style={styles.footerText}>Updated At {moment(details.updated).format('MMMM Do YYYY, h:mm:ss a')}</Text>
+				</Card>
+			</React.Fragment>
+			
+		)
+	}
 
     return(
         <React.Fragment>
@@ -149,7 +149,7 @@ export default Detail = (props) => {
           	accessoryLeft={BackAction}
             title='Back to Info'
           />
-										{RenderCard()}
+					{RenderCard()}
           <MapView
 							center={{ 
 								latitude: lat,

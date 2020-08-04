@@ -14,6 +14,7 @@ import { CardStyleInterpolators } from '@react-navigation/stack';
 
 import BottomNavigation from './components/BottomNav'
 import DetailScreen from './screens/Detail'
+import SearchScreen from './screens/Search'
 
 //redux
 import { Provider } from "react-redux";
@@ -48,6 +49,20 @@ const App = () => {
 														component={DetailScreen} 
 														options={{
 																cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+																transitionSpec: {
+																	open:animationConfig,
+																	close:animationConfig
+																}
+															}}
+												/>
+
+												<Stack.Screen 
+														name="Search" 
+														component={SearchScreen} 
+														options={{
+																cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+																gestureEnabled:true,
+																gestureDirection:'vertical',
 																transitionSpec: {
 																	open:animationConfig,
 																	close:animationConfig
