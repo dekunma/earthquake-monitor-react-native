@@ -10,6 +10,10 @@ import { Col, Row, Grid } from "react-native-easy-grid";
 
 import moment from 'moment'
 
+//redux
+import { useDispatch, useSelector } from 'react-redux'
+import handleChangeURL from '../actions/handleChangeURL'
+
 export default Search = (props) => {
 
 	const styles = useStyleSheet(themedStyles);
@@ -23,10 +27,13 @@ export default Search = (props) => {
 	const [ showStartTimePicker, setShowStartTimePicker ] = React.useState(false)
 	const [ showEndDatePicker, setShowEndDatePicker ] = React.useState(false)
     const [ showEndTimePicker, setShowEndTimePicker ] = React.useState(false)
-	const [ startDate, setStartDate ] = React.useState(Date.now())
-	const [ startTime, setStartTime ] = React.useState(Date.now())
-	const [ endDate, setEndDate ] = React.useState(Date.now())
-	const [ endTime, setEndTime ] = React.useState(Date.now())
+	const [ startDate, setStartDate ] = React.useState(new Date())
+	const [ startTime, setStartTime ] = React.useState(new Date())
+	const [ endDate, setEndDate ] = React.useState(new Date())
+    const [ endTime, setEndTime ] = React.useState(new Date())
+    
+    const URL = useSelector(state => state.URL)
+    const dispatch = useDispatch()
 
     const BackAction = () => (
         <TopNavigationAction 
@@ -75,8 +82,6 @@ export default Search = (props) => {
 			setShowStartTimePicker(false)
 			const currentTime = selectedTime || time
 			setStartTime(currentTime)
-			console.log(currentTime.getHours())
-			console.log(currentTime.getMinutes())
 		}
 	}
 
@@ -90,10 +95,19 @@ export default Search = (props) => {
 			setShowEndTimePicker(false)
 			const currentTime = selectedTime || time
 			setEndTime(currentTime)
-			console.log(currentTime.getHours())
-			console.log(currentTime.getMinutes())
 		}
-	}
+    }
+    
+    const onSubmit = () => {
+        const orderBy = sortByTime ? '&orderby=time' : ''
+        const minmagnitude = '&minmagnitude=' + minMag
+        const maxmagnitude = '&maxmagnitude=' + maxMag
+        const starttime = enableStartTime ? '&starttime=' + startDate.getFullYear() + '-' + eval(startDate.getMonth() + 1) + '-' + startDate.getDate() + '-' + startTime.getHours() + '-' + startTime.getMinutes() : ''
+        const endtime = enableEndTime ? '&endtime=' + endDate.getFullYear() + '-' + eval(endDate.getMonth() + 1) + '-' + endDate.getDate() + '-' + endTime.getHours() + '-' + endTime.getMinutes() : ''
+        const newURL = URL + orderBy + minmagnitude + maxmagnitude + starttime + endtime
+        dispatch(handleChangeURL(newURL))
+        props.navigation.goBack()
+    }
 
     const RenderMagRange = () => {
         return (
@@ -324,7 +338,7 @@ export default Search = (props) => {
                 {RenderStartTime()}
 				{RenderEndTime()}
 
-				<Button title="Search" color={androidGreen} />
+				<Button title="Search" color={androidGreen} onPress={onSubmit}/>
 
             </Layout>
         </ScrollView>

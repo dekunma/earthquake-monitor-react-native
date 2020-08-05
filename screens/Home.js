@@ -17,6 +17,9 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import { useNavigation } from '@react-navigation/native';
 
+//redux
+import { useSelector } from 'react-redux'
+
 const SearchIcon = (props) => (
 	<Icon {...props} name='search-outline' />
 )
@@ -24,64 +27,68 @@ const SearchIcon = (props) => (
 export default About = () => {
 
     const [ data, setData ] = React.useState([])
-		const [ loading, setLoading ] = React.useState(true)
-		const [ menuVisible, setMenuVisible ] = React.useState(false)
-		const [ refreshing, setRefreshing ] = React.useState(false)
+	const [ loading, setLoading ] = React.useState(true)
+	const [ menuVisible, setMenuVisible ] = React.useState(false)
+	const [ refreshing, setRefreshing ] = React.useState(false)
 
-		const navigation = useNavigation();
+	const navigation = useNavigation();
 
-		const onRefresh = React.useCallback(() => {
-			setRefreshing(true);
+	const URL = useSelector(state => state.URL)
 
-			axios.get('https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&limit=100&orderby=time&minmagnitude=0.0&maxmagnitude=12.0&starttime=2020-07-10')
-			.then(r => {
-					const data = r.data.features
-					setData(data)
-					setRefreshing(false)
-			})
-			.catch(e => {
-					console.log(e)
-			})
-		}, []);	
+	const onRefresh = React.useCallback(() => {
+		setRefreshing(true);
 
-		const toggleMenu = () => {
-			setMenuVisible(!menuVisible);
-		};
+		console.log(URL)
 
-		const navigateToSearch = () => {
-			navigation.push('Search')
-		}
-		
-		const renderMenuAction = () => (
-			<TopNavigationAction icon={SearchIcon} onPress={navigateToSearch}/>
-		);
-		
-		const renderRightActions = () => (
-			<React.Fragment>
-				<OverflowMenu
-					anchor={renderMenuAction}
-					visible={menuVisible}
-					onBackdropPress={toggleMenu}>
-					<MenuItem title='About'/>
-					<MenuItem title='Logout'/>
-				<MenuItem title='Test' children={ev => <Text>test</Text>}/>
-				</OverflowMenu>
-			</React.Fragment>
-		);
+		axios.get(URL)
+		.then(r => {
+				const data = r.data.features
+				setData(data)
+				setRefreshing(false)
+		})
+		.catch(e => {
+				console.log(e)
+		})
+	}, []);	
 
-		const getData = () => {
-			axios.get('https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&limit=100&orderby=time&minmagnitude=0.0&maxmagnitude=12.0&starttime=2020-07-11')
-			.then(r => {
-					const data = r.data.features
-					setData(data)
-					setLoading(false)
-					cache.set("data", data);
-			})
-			.catch(e => {
-					console.log('error',e)
-					setLoading(false)
-			})
-		}
+	const toggleMenu = () => {
+		setMenuVisible(!menuVisible);
+	};
+
+	const navigateToSearch = () => {
+		navigation.push('Search')
+	}
+	
+	const renderMenuAction = () => (
+		<TopNavigationAction icon={SearchIcon} onPress={navigateToSearch}/>
+	);
+	
+	const renderRightActions = () => (
+		<React.Fragment>
+			<OverflowMenu
+				anchor={renderMenuAction}
+				visible={menuVisible}
+				onBackdropPress={toggleMenu}>
+				<MenuItem title='About'/>
+				<MenuItem title='Logout'/>
+			<MenuItem title='Test' children={ev => <Text>test</Text>}/>
+			</OverflowMenu>
+		</React.Fragment>
+	);
+
+	const getData = () => {
+		axios.get(URL)
+		.then(r => {
+				const data = r.data.features
+				setData(data)
+				setLoading(false)
+				cache.set("data", data);
+		})
+		.catch(e => {
+				console.log('error',e)
+				setLoading(false)
+		})
+	}
 
     React.useEffect(() => {
 			const cacheData = cache.get("data")
