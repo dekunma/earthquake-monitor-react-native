@@ -13,7 +13,6 @@ import moment from 'moment'
 //redux
 import { useDispatch, useSelector } from 'react-redux'
 import handleChangeURL from '../actions/handleChangeURL'
-import handleTriggerRefresh from '../actions/handleTriggerRefresh'
 
 const obj = {
     key1:'key1'
@@ -111,9 +110,12 @@ export default Search = (props) => {
         const endtime = enableEndTime ? '&endtime=' + endDate.getFullYear() + '-' + eval(endDate.getMonth() + 1) + '-' + endDate.getDate() + '-' + endTime.getHours() + '-' + endTime.getMinutes() : ''
         const newURL = URL + orderBy + minmagnitude + maxmagnitude + starttime + endtime
         dispatch(handleChangeURL(newURL))
-        dispatch(handleTriggerRefresh(true))
 
-        props.navigation.navigate('Main', { key1:'key1' })
+        // props.route.params.onGoBack()
+        // props.navigation.
+        // props.navigation.reset()
+        
+        console.log(444, props.route)
     }
 
     const RenderMagRange = () => {
@@ -336,7 +338,7 @@ export default Search = (props) => {
                 title='Search'
             />
 
-            <Layout level='2' style={{height:'100%', padding:20}}>
+            <Layout level='2' style={{height:'100%', padding:20, marginBottom:70}}>
                 <Text style={styles.titleText}>Search Settings</Text>
                 <Text />
                 

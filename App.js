@@ -29,51 +29,50 @@ const App = () => {
         <>
 					<Provider store={store}>
 						<IconRegistry icons={EvaIconsPack} />
-						<ApplicationProvider 
+							<ApplicationProvider 
 								{...eva} 
 								theme={eva.light}
 								// customMapping={mapping}
-						>
+							>
 								<NavigationContainer>
 										<Stack.Navigator 
-												initialRouteName="Main" 
-												screenOptions={{
-														headerShown: false,
-													}}
+											initialRouteName="Main" 
+											screenOptions={{
+													headerShown: false,
+												}}
 										>
-												<Stack.Screen 
-														name="Main" 
-														component={BottomNavigation}
-												/>
-												<Stack.Screen 
-														name="Home" 
-														component={HomeScreen}
-												/>
-												<Stack.Screen 
-														name="Detail" 
-														component={DetailScreen} 
-														options={{
-																cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-																transitionSpec: {
-																	open:animationConfig,
-																	close:animationConfig
-																}
-															}}
-												/>
-
-												<Stack.Screen 
-														name="Search" 
-														component={SearchScreen} 
-														options={{
-																cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
-																gestureEnabled:true,
-																gestureDirection:'vertical',
-																transitionSpec: {
-																	open:animationConfig,
-																	close:animationConfig
-																}
-															}}
-												/>
+										<Stack.Screen 
+												name="Main" 
+												component={BottomNavigation}
+										/>
+										<Stack.Screen 
+											name="Home" 
+											component={HomeScreen}
+										/>
+										<Stack.Screen 
+											name="Detail" 
+											component={DetailScreen} 
+											options={{
+												cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+												transitionSpec: {
+													open:animationConfig,
+													close:animationConfig
+												}
+											}}
+										/>
+										<Stack.Screen 
+											name="Search" 
+											component={SearchScreen} 
+											options={{
+												cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+												gestureEnabled:true,
+												gestureDirection:'vertical',
+												transitionSpec: {
+													open:animationConfig,
+													close:animationConfig
+												}
+											}}
+										/>
 										</Stack.Navigator>
 								</NavigationContainer>
 						</ApplicationProvider>

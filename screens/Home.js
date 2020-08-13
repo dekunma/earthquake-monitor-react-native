@@ -25,45 +25,41 @@ const Stack = createStackNavigator();
 
 //redux
 import { useSelector } from 'react-redux'
-import handleTriggerRefresh from '../actions/handleTriggerRefresh'
 
 const SearchIcon = (props) => (
 	<Icon {...props} name='search-outline' />
 )
 
-const ORIGINAL_URL = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&limit=100'
-
 export default HomeContainer = () => {
 	return (
 		<React.Fragment>
 			<NavigationContainer independent={true}>
-					<Stack.Navigator 
-						initialRouteName="Home" 
-						screenOptions={{
-								headerShown: false,
-							}}
-					>
-							<Stack.Screen 
-									name="Home" 
-									component={Home}
-							/>
-							<Stack.Screen 
-									name="Search" 
-									component={SearchScreen} 
-									options={{
-											cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
-											gestureEnabled:true,
-											gestureDirection:'vertical',
-											transitionSpec: {
-												open:animationConfig,
-												close:animationConfig
-											}
-										}}
-							/>
+				<Stack.Navigator 
+					initialRouteName="Home" 
+					screenOptions={{
+						headerShown: false,
+					}}
+				>
+				<Stack.Screen 
+						name="Home" 
+						component={Home}
+				/>
+				<Stack.Screen 
+					name="Search" 
+					component={SearchScreen} 
+					options={{
+						cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+						gestureEnabled:true,
+						gestureDirection:'vertical',
+						transitionSpec: {
+							open:animationConfig,
+							close:animationConfig
+						}
+					}}
+				/>
 					</Stack.Navigator>
 			</NavigationContainer>
 		</React.Fragment>
-		
 	)
 }
 
@@ -74,6 +70,7 @@ const Home = (props) => {
 	const [ loading, setLoading ] = React.useState(true)
 	const [ menuVisible, setMenuVisible ] = React.useState(false)
 	const [ refreshing, setRefreshing ] = React.useState(false)
+	const [ refreshTriggerer, setRefreshTriggerer ] = React.useState(0)
 
 	const navigation = useNavigation();
 
@@ -81,6 +78,8 @@ const Home = (props) => {
 	const triggerRefresh = useSelector(state => state.triggerRefresh)
 
 	const onRefresh = React.useCallback(() => {
+		setRefreshTriggerer(count => count + 1) //我真的qtmd，必须得这样，不然redux的state不会被更新
+
 		setRefreshing(true);
 
 		axios.get(URL)
@@ -99,6 +98,9 @@ const Home = (props) => {
 	};
 
 	const navigateToSearch = () => {
+		navigation.setOptions({
+			onRefresh: () => onRefresh()
+		})
 		navigation.push('Search')
 	}
 	
@@ -133,14 +135,21 @@ const Home = (props) => {
 		})
 	}
 
+	const testRefresh = () => {
+		console.log('TR', URL)
+		onRefresh()
+	}
+
 	React.useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
-			console.log(111, URL)
-			console.log('p', props.route)
+			// setRefreshTriggerer(count => count + 1) //我真的qtmd，必须得这样，不然redux的state不会被更新
+			// console.log('r', props.route)
+			// if(props.route.params && props.route.params.triggerRefresh) console.log(11111111)
+			console.log(1111, props.route.params)
 		})
 
 		const blurTest = navigation.addListener('blur', () => {
-			console.log(222, URL)
+			// console.log(222, URL)
 		})
 
 		const cacheData = cache.get("data")
