@@ -12,6 +12,8 @@ import HomeScreen from '../screens/Home'
 import GraphScreen from '../screens/Graph'
 import AboutScreen from '../screens/About'
 
+//nav
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   bottomNavigation: {
@@ -32,29 +34,47 @@ const InfoIcon = (props) => (
   <Icon {...props} name='info-outline'/>
 );
 
-const BottomTabBar = ({ navigation, state }) => (
-  <BottomNavigation
-    selectedIndex={state.index}
-    onSelect={index => navigation.navigate(state.routeNames[index])}
-    style={styles.bottomNavigation}
-    appearance='noIndicator'
-  >
-    <BottomNavigationTab title='HOME' icon={HomeIcon}/>
-    <BottomNavigationTab title='GRAPH' icon={MapIcon}/>
-    <BottomNavigationTab title='ABOUT' icon={InfoIcon}/>
-  </BottomNavigation>
-);
+// const TabNavigator = () => (
+//   <Navigator tabBar={props => <BottomTabBar {...props} />}>
+//     <Screen name='HOME' component={HomeScreen}/>
+//     <Screen name='GRAPH' component={GraphScreen}/>
+//     <Screen name='ABOUT' component={AboutScreen}/>
+//   </Navigator>
+// );
 
-const TabNavigator = () => (
-  <Navigator tabBar={props => <BottomTabBar {...props} />}>
-    <Screen name='HOME' component={HomeScreen}/>
-    <Screen name='GRAPH' component={GraphScreen}/>
-    <Screen name='ABOUT' component={AboutScreen}/>
-  </Navigator>
-);
+export default BottomNav = () => {
 
-export default BottomNav = () => (
-  <NavigationContainer independent={true}>
-    <TabNavigator/>
-  </NavigationContainer>
-);
+  const [ index, setIndex ] = React.useState(0)
+  const navigation = useNavigation()
+
+  const onSelect = (index) => {
+    switch(index) {
+      case 0:
+        navigation.navigate('Home')
+    }
+    console.log(index)
+  }
+
+  const BottomTabBar = ({ navigation, state }) => (
+
+    <BottomNavigation
+      selectedIndex={index}
+      // onSelect={index => navigation.navigate(state.routeNames[index])}
+      onSelect={index => onSelect(index)}
+      style={styles.bottomNavigation}
+      appearance='noIndicator'
+    >
+      <BottomNavigationTab title='HOME' icon={HomeIcon}/>
+      <BottomNavigationTab title='GRAPH' icon={MapIcon}/>
+      <BottomNavigationTab title='ABOUT' icon={InfoIcon}/>
+    </BottomNavigation>
+  );
+
+  return (
+    <NavigationContainer independent={true}>
+      {/* <TabNavigator/> */}
+      <BottomTabBar />
+    </NavigationContainer>
+  )
+
+};

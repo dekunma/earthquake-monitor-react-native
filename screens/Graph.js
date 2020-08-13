@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, View } from 'react-native'
-import { MapView } from "react-native-amap3d";
+import { MapView, MapType } from "react-native-amap3d";
 
 export default About = () => {
     return(
@@ -13,6 +13,7 @@ export default About = () => {
                     //     latitude: 39.91095,
                     //     longitude: 116.37296
                     // }}
+                    mapType={MapType.Satellite}
                     showsZoomControls={false}
                     style={{
                         width: '100%',

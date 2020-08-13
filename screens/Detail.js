@@ -11,7 +11,7 @@ import PinImage from '../images/pin.png'
 import { useSelector } from 'react-redux'
 
 //map
-import { MapView, MapType  } from "react-native-amap3d";
+import { MapView, MapType } from "react-native-amap3d";
 
 import moment from 'moment'
 
@@ -56,9 +56,8 @@ export default Detail = (props) => {
 		body: {
 			position:'absolute',
 			bottom:70,
-			borderTopEndRadius:0,
+			borderRadius:0 ,
 			backgroundColor:color,
-			borderTopStartRadius:0,
 			marginLeft:15,
 			width:'92%',
 			zIndex:99,
@@ -130,9 +129,9 @@ export default Detail = (props) => {
 				<Card appearance='filled' style={styles.body}>
 					<Text style={styles.bodyTitle}>{details.mag > 7 ? 'May Cause Danger':'No Danger'}</Text> 
 					<Text style={styles.bodySub}>Based on earthquake data, we determined that {details.mag > 7 ? 'derious damage might occur.':'no serious damage might occur.'}</Text> 
-					<Text style={styles.bodySub}>Depth: {depth} km</Text> 
+					<Text style={styles.bodySub}>Depth: {depth.toFixed(3)} km</Text> 
 					<Text style={styles.bodySub}>Maximum Intensity: {details.mmi === null ? 0 : details.mmi} Gal</Text> 
-					<Text style={styles.bodySub}>Coordinates: ({lat}, {long})</Text>
+					<Text style={styles.bodySub}>Coordinates: ({lat.toFixed(3)}, {long.toFixed(3)})</Text>
 				</Card>
 
 				<Card appearance='filled' style={styles.footer}>
@@ -164,7 +163,6 @@ export default Detail = (props) => {
 							tiltEnabled={false}
 							zoomLevel={7}
 							showsZoomControls={false}
-							
           >
 						<MapView.Marker
 							coordinate={{

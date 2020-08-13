@@ -15,6 +15,7 @@ import { CardStyleInterpolators } from '@react-navigation/stack';
 import BottomNavigation from './components/BottomNav'
 import DetailScreen from './screens/Detail'
 import SearchScreen from './screens/Search'
+import HomeScreen from './screens/Home'
 
 //redux
 import { Provider } from "react-redux";
@@ -43,6 +44,10 @@ const App = () => {
 												<Stack.Screen 
 														name="Main" 
 														component={BottomNavigation}
+												/>
+												<Stack.Screen 
+														name="Home" 
+														component={HomeScreen}
 												/>
 												<Stack.Screen 
 														name="Detail" 

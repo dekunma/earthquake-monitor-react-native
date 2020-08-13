@@ -15,18 +15,22 @@ import Loading from '../screens/Loading'
 import { Cache } from "react-native-cache";
 import AsyncStorage from '@react-native-community/async-storage';
 
+//react-navigation
 import { useNavigation } from '@react-navigation/native';
 
 //redux
 import { useSelector } from 'react-redux'
+import handleTriggerRefresh from '../actions/handleTriggerRefresh'
 
 const SearchIcon = (props) => (
 	<Icon {...props} name='search-outline' />
 )
 
-export default About = () => {
+const ORIGINAL_URL = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&limit=100'
 
-    const [ data, setData ] = React.useState([])
+export default Home = (props) => {
+
+  const [ data, setData ] = React.useState([])
 	const [ loading, setLoading ] = React.useState(true)
 	const [ menuVisible, setMenuVisible ] = React.useState(false)
 	const [ refreshing, setRefreshing ] = React.useState(false)
@@ -34,11 +38,10 @@ export default About = () => {
 	const navigation = useNavigation();
 
 	const URL = useSelector(state => state.URL)
+	const triggerRefresh = useSelector(state => state.triggerRefresh)
 
 	const onRefresh = React.useCallback(() => {
 		setRefreshing(true);
-
-		console.log(URL)
 
 		axios.get(URL)
 		.then(r => {
@@ -90,19 +93,29 @@ export default About = () => {
 		})
 	}
 
-    React.useEffect(() => {
-			const cacheData = cache.get("data")
-			setTimeout(() => {
-				if(cacheData === null || cacheData._W === undefined || cacheData._W === null) {
-					getData()
-				}
-				else {
-					setData(cacheData._W)
-					setLoading(false)
-					getData()
-				}
-			}, 100)
-    }, [])
+	React.useEffect(() => {
+		const unsubscribe = navigation.addListener('focus', () => {
+			console.log(111, URL)
+			console.log('p', props.route)
+		})
+
+		const blurTest = navigation.addListener('blur', () => {
+			console.log(222, URL)
+		})
+
+		const cacheData = cache.get("data")
+		setTimeout(() => {
+			if(cacheData === null || cacheData._W === undefined || cacheData._W === null) {
+				getData()
+			}
+			else {
+				setData(cacheData._W)
+				setLoading(false)
+				getData()
+			}
+		}, 100)
+		// return unsubscribe
+	}, [])
 
     return(
 					<Layout style={{height:'100%'}} level='2'>

@@ -13,6 +13,11 @@ import moment from 'moment'
 //redux
 import { useDispatch, useSelector } from 'react-redux'
 import handleChangeURL from '../actions/handleChangeURL'
+import handleTriggerRefresh from '../actions/handleTriggerRefresh'
+
+const obj = {
+    key1:'key1'
+}
 
 export default Search = (props) => {
 
@@ -106,7 +111,9 @@ export default Search = (props) => {
         const endtime = enableEndTime ? '&endtime=' + endDate.getFullYear() + '-' + eval(endDate.getMonth() + 1) + '-' + endDate.getDate() + '-' + endTime.getHours() + '-' + endTime.getMinutes() : ''
         const newURL = URL + orderBy + minmagnitude + maxmagnitude + starttime + endtime
         dispatch(handleChangeURL(newURL))
-        props.navigation.goBack()
+        dispatch(handleTriggerRefresh(true))
+
+        props.navigation.navigate('Main', { key1:'key1' })
     }
 
     const RenderMagRange = () => {
