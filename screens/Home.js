@@ -10,6 +10,7 @@ import { Text, TopNavigation, Icon, MenuItem, OverflowMenu, TopNavigationAction,
 //screens & components
 import CardForHome from '../components/CardForHome'
 import Loading from '../screens/Loading'
+import SearchScreen from '../screens/Search'
 
 //cache
 import { Cache } from "react-native-cache";
@@ -17,6 +18,10 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 //react-navigation
 import { useNavigation } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { CardStyleInterpolators } from '@react-navigation/stack';
+const Stack = createStackNavigator();
 
 //redux
 import { useSelector } from 'react-redux'
@@ -28,7 +33,42 @@ const SearchIcon = (props) => (
 
 const ORIGINAL_URL = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&limit=100'
 
-export default Home = (props) => {
+export default HomeContainer = () => {
+	return (
+		<React.Fragment>
+			<NavigationContainer independent={true}>
+					<Stack.Navigator 
+						initialRouteName="Home" 
+						screenOptions={{
+								headerShown: false,
+							}}
+					>
+							<Stack.Screen 
+									name="Home" 
+									component={Home}
+							/>
+							<Stack.Screen 
+									name="Search" 
+									component={SearchScreen} 
+									options={{
+											cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+											gestureEnabled:true,
+											gestureDirection:'vertical',
+											transitionSpec: {
+												open:animationConfig,
+												close:animationConfig
+											}
+										}}
+							/>
+					</Stack.Navigator>
+			</NavigationContainer>
+		</React.Fragment>
+		
+	)
+}
+
+
+const Home = (props) => {
 
   const [ data, setData ] = React.useState([])
 	const [ loading, setLoading ] = React.useState(true)
@@ -118,7 +158,7 @@ export default Home = (props) => {
 	}, [])
 
     return(
-					<Layout style={{height:'100%'}} level='2'>
+				<Layout style={{height:'100%'}} level='2'>
 						<TopNavigation
 							alignment='center'
 							title='Earthquake Information'
@@ -199,3 +239,15 @@ const cache = new Cache({
     },
     backend: AsyncStorage
 });
+
+const animationConfig = {
+	animation: 'spring',
+  config: {
+    stiffness: 1000,
+    damping: 500,
+    mass: 3,
+    overshootClamping: true,
+    restDisplacementThreshold: 0.01,
+    restSpeedThreshold: 0.01,
+  },
+}
