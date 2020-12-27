@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, RefreshControl } from 'react-native'
+import { ScrollView, RefreshControl, View, TouchableOpacity } from 'react-native'
 
 //axios
 import axios from 'axios'
@@ -11,6 +11,10 @@ import { Text, TopNavigation, Icon, MenuItem, OverflowMenu, TopNavigationAction,
 import CardForHome from '../components/CardForHome'
 import Loading from '../screens/Loading'
 import SearchScreen from '../screens/Search'
+import DetailScreen from '../screens/Detail'
+
+
+import { Toast } from 'popup-ui'
 
 //cache
 import { Cache } from "react-native-cache";
@@ -26,86 +30,116 @@ const Stack = createStackNavigator();
 //redux
 import { useSelector } from 'react-redux'
 
+// popup
+import Modal from 'react-native-modal';
+
 const SearchIcon = (props) => (
 	<Icon {...props} name='search-outline' />
 )
 
-export default HomeContainer = () => {
-	return (
-		<React.Fragment>
-			<NavigationContainer independent={true}>
-				<Stack.Navigator 
-					initialRouteName="Home" 
-					screenOptions={{
-						headerShown: false,
-					}}
-				>
-				<Stack.Screen 
-						name="Home" 
-						component={Home}
-				/>
-				<Stack.Screen 
-					name="Search" 
-					component={SearchScreen} 
-					options={{
-						cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
-						gestureEnabled:true,
-						gestureDirection:'vertical',
-						transitionSpec: {
-							open:animationConfig,
-							close:animationConfig
-						}
-					}}
-				/>
-					</Stack.Navigator>
-			</NavigationContainer>
-		</React.Fragment>
-	)
-}
+// export default HomeContainer = () => {
+// 	return (
+// 		<React.Fragment>
+// 			<NavigationContainer independent={true}>
+// 				<Stack.Navigator 
+// 					initialRouteName="Home" 
+// 					screenOptions={{
+// 						headerShown: false,
+// 					}}
+// 				>
+// 				<Stack.Screen 
+// 						name="Home" 
+// 						component={Home}
+// 				/>
+// 				<Stack.Screen 
+// 					name="Search" 
+// 					component={SearchScreen} 
+// 					options={{
+// 						cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+// 						gestureEnabled:true,
+// 						gestureDirection:'vertical',
+// 						transitionSpec: {
+// 							open:animationConfig,
+// 							close:animationConfig
+// 						}
+// 					}}
+// 				/>
+// 					</Stack.Navigator>
+// 			</NavigationContainer>
+// 		</React.Fragment>
+// 	)
+// }
 
 
-const Home = (props) => {
+export default Home = (props) => {
 
   const [ data, setData ] = React.useState([])
 	const [ loading, setLoading ] = React.useState(true)
 	const [ menuVisible, setMenuVisible ] = React.useState(false)
 	const [ refreshing, setRefreshing ] = React.useState(false)
-	const [ refreshTriggerer, setRefreshTriggerer ] = React.useState(0)
+	// const [ refreshTriggerer, setRefreshTriggerer ] = React.useState(0)
+	const [ searchVisible, setSearchVisible ] = React.useState(false)
 
 	const navigation = useNavigation();
 
-	const URL = useSelector(state => state.URL)
+	// const URL = useSelector(state => state.URL)
+	const URL = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&limit=100'
 	const triggerRefresh = useSelector(state => state.triggerRefresh)
 
-	const onRefresh = React.useCallback(() => {
-		setRefreshTriggerer(count => count + 1) //我真的qtmd，必须得这样，不然redux的state不会被更新
+	const onRefresh = React.useCallback((url) => {
+		let alerter = setTimeout(() => {
+			Toast.show({
+				title: 'Timed Out',
+				text: 'Unable to fetch data after 30 seconds',
+				type: 'Warning',
+				color: '#f39c12',
+			})
+			setRefreshing(false)
+			setLoading(false)
+		}, 30000)
 
 		setRefreshing(true);
 
-		axios.get(URL)
+		axios.get(url)
 		.then(r => {
-				const data = r.data.features
-				setData(data)
-				setRefreshing(false)
+			const data = r.data.features
+			setData(data)
+			setRefreshing(false)
+			Toast.show({
+				title: 'Success',
+				text: 'Information Updated',
+				type: 'Warning',
+				color: '#2ecc71',
+			})
 		})
 		.catch(e => {
-				console.log(e)
+			Toast.show({
+				title: 'Error',
+				text: e.message,
+				type: 'Warning',
+				color: '#f39c12',
+			})
+			setRefreshing(false)
 		})
+		.finally(f => {
+			clearTimeout(alerter)
+		})
+
 	}, []);	
 
-	const toggleMenu = () => {
-		setMenuVisible(!menuVisible);
-	};
+	// const toggleMenu = () => {
+	// 	setMenuVisible(!menuVisible);
+	// };
 
-	const navigateToSearch = () => {
-		navigation.setOptions({
-			onRefresh: () => onRefresh()
-		})
-		navigation.push('Search')
-	}
+	// const navigateToSearch = () => {
+	// 	navigation.setOptions({
+	// 		onRefresh: () => onRefresh()
+	// 	})
+	// 	navigation.push('Search')
+	// }
 	
 	const renderMenuAction = () => (
-		<TopNavigationAction icon={SearchIcon} onPress={navigateToSearch}/>
+		<TopNavigationAction icon={SearchIcon} onPress={toggleSearch}/>
 	);
 	
 	const renderRightActions = () => (
@@ -113,10 +147,7 @@ const Home = (props) => {
 			<OverflowMenu
 				anchor={renderMenuAction}
 				visible={menuVisible}
-				onBackdropPress={toggleMenu}>
-				<MenuItem title='About'/>
-				<MenuItem title='Logout'/>
-			<MenuItem title='Test' children={ev => <Text>test</Text>}/>
+			>
 			</OverflowMenu>
 		</React.Fragment>
 	);
@@ -124,33 +155,39 @@ const Home = (props) => {
 	const getData = () => {
 		axios.get(URL)
 		.then(r => {
-				const data = r.data.features
-				setData(data)
-				setLoading(false)
-				cache.set("data", data);
+			const data = r.data.features
+			setData(data)
+			setLoading(false)
+			cache.set("data", data);
 		})
 		.catch(e => {
-				console.log('error',e)
-				setLoading(false)
+			Toast.show({
+				title: 'Error',
+				text: e.message,
+				type: 'Warning',
+				color: '#f39c12',
+			})
+			setRefreshing(false)
+			setLoading(false)
 		})
 	}
 
-	const testRefresh = () => {
-		console.log('TR', URL)
-		onRefresh()
+	const toggleSearch = () => {
+		setSearchVisible(!searchVisible)
+	}
+
+	const searchCallBack = (newURL) => {
+		toggleSearch()
+		onRefresh(newURL)
 	}
 
 	React.useEffect(() => {
-		const unsubscribe = navigation.addListener('focus', () => {
-			// setRefreshTriggerer(count => count + 1) //我真的qtmd，必须得这样，不然redux的state不会被更新
-			// console.log('r', props.route)
-			// if(props.route.params && props.route.params.triggerRefresh) console.log(11111111)
-			console.log(1111, props.route.params)
-		})
-
-		const blurTest = navigation.addListener('blur', () => {
-			// console.log(222, URL)
-		})
+		// const unsubscribe = navigation.addListener('focus', () => {
+		// 	// setRefreshTriggerer(count => count + 1) //我真的qtmd，必须得这样，不然redux的state不会被更新
+		// 	// console.log('r', props.route)
+		// 	// if(props.route.params && props.route.params.triggerRefresh) console.log(11111111)
+		// 	console.log(1111, props.route.params)
+		// })
 
 		const cacheData = cache.get("data")
 		setTimeout(() => {
@@ -167,68 +204,81 @@ const Home = (props) => {
 	}, [])
 
     return(
-				<Layout style={{height:'100%'}} level='2'>
-						<TopNavigation
-							alignment='center'
-							title='Earthquake Information'
-							accessoryRight={renderRightActions}
+			<Layout style={{height:'100%'}} level='2'>
+				<TopNavigation
+					alignment='center'
+					title='Earthquake Information'
+					accessoryRight={renderRightActions}
+				/>
+
+				<Modal 
+					isVisible={searchVisible}
+					onBackButtonPress={ev => toggleSearch()}
+					style={{margin: 0}}
+					useNativeDriver={true}
+				>
+					<View >
+						<SearchScreen 
+							searchCallBack={searchCallBack}
 						/>
+					</View>
+				</Modal>
 
-							<ScrollView 
-								refreshControl={
-									<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-								}
-								style={{height:'100%'}}
-							>
-								<Layout style={{height:'100%'}} level='2'>
-									{loading
-										? <Loading />
-										: 
-										data.map(elem => {
-											const mag = elem.properties.mag
-											var sig = elem.properties.sig
-											var color
-											if(mag < 1) {
-												color = colors.grey
-											}
-											else if(mag < 3) {
-												color = colors.green
-											}
-											else if(mag < 5) {
-												color = colors.blue
-											}
-											else if(mag < 6) {
-												color = colors.purple
-											}
-											else if(mag < 7) {
-												color = colors.yellow
-											}
-											else color = colors.orange
-											
-											sig /= 10
-
-											return(
-												<CardForHome 
-													key={elem.properties.ids}
-													place={elem.properties.title}
-													mag={elem.properties.mag}
-													color={color}
-													time={elem.properties.time}
-													type={elem.properties.type}
-													alert={elem.properties.alert}
-													status={elem.properties.status}
-													sig={sig}
-													details={elem.properties}
-													geometry={elem.geometry}
-												/>
-											)
-											
-										})
+					<ScrollView 
+						refreshControl={
+							<RefreshControl refreshing={refreshing} onRefresh={ev => onRefresh(URL)} />
+						}
+						style={{height:'100%'}}
+					>
+						<Layout style={{height:'100%'}} level='2'>
+							{loading
+								? <Loading />
+								: 
+								data.map(elem => {
+									const mag = elem.properties.mag
+									var sig = elem.properties.sig
+									var color
+									if(mag < 1) {
+										color = colors.grey
 									}
-								</Layout>
-								
-							</ScrollView>
-					</Layout>
+									else if(mag < 3) {
+										color = colors.green
+									}
+									else if(mag < 5) {
+										color = colors.blue
+									}
+									else if(mag < 6) {
+										color = colors.purple
+									}
+									else if(mag < 7) {
+										color = colors.yellow
+									}
+									else color = colors.orange
+									
+									sig /= 10
+
+									return(
+										<CardForHome 
+											key={elem.properties.ids}
+											place={elem.properties.title}
+											mag={elem.properties.mag}
+											color={color}
+											time={elem.properties.time}
+											type={elem.properties.type}
+											alert={elem.properties.alert}
+											status={elem.properties.status}
+											sig={sig}
+											details={elem.properties}
+											geometry={elem.geometry}
+										/>
+									)
+									
+								})
+							}
+						</Layout>
+						
+					</ScrollView>
+				</Layout>
     )
 }
 

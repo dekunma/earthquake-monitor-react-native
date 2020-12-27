@@ -21,6 +21,9 @@ import HomeScreen from './screens/Home'
 import { Provider } from "react-redux";
 import store from './store'
 
+// pop up
+import { Root } from 'popup-ui'
+
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -28,22 +31,25 @@ const App = () => {
     return(
         <>
 					<Provider store={store}>
+						
 						<IconRegistry icons={EvaIconsPack} />
 							<ApplicationProvider 
 								{...eva} 
 								theme={eva.light}
 								// customMapping={mapping}
 							>
-								<NavigationContainer>
+								{/* Root for Toast (bottom pop up) */}
+								<Root>
+									<NavigationContainer>
 										<Stack.Navigator 
 											initialRouteName="Main" 
 											screenOptions={{
-													headerShown: false,
-												}}
+												headerShown: false,
+											}}
 										>
 										<Stack.Screen 
-												name="Main" 
-												component={BottomNavigation}
+											name="Main" 
+											component={BottomNavigation}
 										/>
 										<Stack.Screen 
 											name="Home" 
@@ -74,7 +80,8 @@ const App = () => {
 											}}
 										/>
 										</Stack.Navigator>
-								</NavigationContainer>
+									</NavigationContainer>
+								</Root>
 						</ApplicationProvider>
 					</Provider>
 					

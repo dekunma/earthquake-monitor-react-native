@@ -12,7 +12,6 @@ import moment from 'moment'
 
 //redux
 import { useDispatch, useSelector } from 'react-redux'
-import handleChangeURL from '../actions/handleChangeURL'
 
 const obj = {
     key1:'key1'
@@ -36,13 +35,12 @@ export default Search = (props) => {
 	const [ endDate, setEndDate ] = React.useState(new Date())
     const [ endTime, setEndTime ] = React.useState(new Date())
     
-    const URL = useSelector(state => state.URL)
-    const dispatch = useDispatch()
+    const URL = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&limit=100'
 
     const BackAction = () => (
         <TopNavigationAction 
             icon={BackIcon}
-            onPress={ev => props.navigation.goBack()}
+            onPress={ev => props.goBack()}
         />
     );
 
@@ -109,13 +107,7 @@ export default Search = (props) => {
         const starttime = enableStartTime ? '&starttime=' + startDate.getFullYear() + '-' + eval(startDate.getMonth() + 1) + '-' + startDate.getDate() + '-' + startTime.getHours() + '-' + startTime.getMinutes() : ''
         const endtime = enableEndTime ? '&endtime=' + endDate.getFullYear() + '-' + eval(endDate.getMonth() + 1) + '-' + endDate.getDate() + '-' + endTime.getHours() + '-' + endTime.getMinutes() : ''
         const newURL = URL + orderBy + minmagnitude + maxmagnitude + starttime + endtime
-        dispatch(handleChangeURL(newURL))
-
-        // props.route.params.onGoBack()
-        // props.navigation.
-        // props.navigation.reset()
-        
-        console.log(444, props.route)
+        props.searchCallBack(newURL)
     }
 
     const RenderMagRange = () => {
@@ -137,7 +129,6 @@ export default Search = (props) => {
                         minimumTrackTintColor={androidGreen}
                         maximumTrackTintColor="#000000"
                         onValueChange={ev => handleChangeMinMag(ev)}
-                        value={Number(minMag)}
                     />
 
                     <Grid style={{marginBottom:20}}>
@@ -152,7 +143,7 @@ export default Search = (props) => {
                         minimumTrackTintColor={androidGreen}
                         maximumTrackTintColor="#000000"
                         onValueChange={ev => handleChangeMaxMag(ev)}
-                        value={Number(maxMag)}
+                        value={12}
                     />  
                 </Card>
             </React.Fragment>

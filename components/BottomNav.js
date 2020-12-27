@@ -54,7 +54,9 @@ const TabNavigator = () => (
 );
 
 export default BottomNav = () => (
+  
   <NavigationContainer independent={true}>
     <TabNavigator/>
   </NavigationContainer>
+  
 );
