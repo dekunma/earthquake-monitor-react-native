@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, View } from 'react-native'
+import { Image } from 'react-native'
 
 //ui kitten
 import { Icon, Text, TopNavigation, TopNavigationAction, Card, StyleService, useStyleSheet } from '@ui-kitten/components';
@@ -138,54 +138,52 @@ export default Detail = (props) => {
 					<Text style={styles.footerText}>Updated At {moment(details.updated).format('MMMM Do YYYY, h:mm:ss a')}</Text>
 				</Card>
 			</React.Fragment>
-			
 		)
 	}
 
     return(
-        <React.Fragment>
-          <TopNavigation
-          	accessoryLeft={BackAction}
-            title='Back to Info'
-          />
-					{RenderCard()}
-          <MapView
-							center={{ 
-								latitude: lat,
-								longitude: long
-							}}
-              style={{
-                  width: '100%',
-                  height: '100%',
-							}}
-							mapType={MapType.Satellite}
-              mapLanguage={1}
-							tiltEnabled={false}
-							zoomLevel={7}
-							showsZoomControls={false}
-          >
-						<MapView.Marker
-							coordinate={{
-								latitude: lat - 0.16, //好了好了这部分是hard code, 不然Marker不在Circle中心
-								longitude: long
-							}}
-							icon={() => <Image source={PinImage} style={{width:60, height:60}}/>}
-						>
-							<Text style={{color:'white'}}>{details.place}</Text>
-						</MapView.Marker>
+        <>
+			<TopNavigation
+				accessoryLeft={BackAction}
+				title='Back to Info'
+			/>
+			{RenderCard()}
+			<MapView
+				center={{ 
+					latitude: lat,
+					longitude: long
+				}}
+				style={{
+					width: '100%',
+					height: '100%',
+				}}
+				mapType={MapType.Satellite}
+				mapLanguage={1}
+				tiltEnabled={false}
+				zoomLevel={7}
+				showsZoomControls={false}
+			>
+				<MapView.Marker
+					coordinate={{
+						latitude: lat - 0.16, //好了好了这部分是hard code, 不然Marker不在Circle中心
+						longitude: long
+					}}
+					icon={() => <Image source={PinImage} style={{width:60, height:60}}/>}
+				>
+					<Text style={{color:'white'}}>{details.place}</Text>
+				</MapView.Marker>
 
-						<MapView.Circle
-							strokeWidth={12}
-							strokeColor="rgba(255, 0, 0, 0.4)"
-							fillColor="rgba(255, 0, 0, 0.2)"
-							radius={40000}
-							coordinate={{
-								latitude: lat,
-								longitude: long
-							}}
-						/>
-
-					</MapView>
-        </React.Fragment>
+				<MapView.Circle
+					strokeWidth={12}
+					strokeColor="rgba(255, 0, 0, 0.4)"
+					fillColor="rgba(255, 0, 0, 0.2)"
+					radius={40000}
+					coordinate={{
+						latitude: lat,
+						longitude: long
+					}}
+				/>
+			</MapView>
+        </>
     ) 
 }

@@ -10,6 +10,9 @@ import { Col, Row, Grid } from "react-native-easy-grid";
 
 import moment from 'moment'
 
+// navigation
+import { useNavigation } from '@react-navigation/native';
+
 export default Search = (props) => {
 
 	const styles = useStyleSheet(themedStyles);
@@ -27,13 +30,15 @@ export default Search = (props) => {
 	const [ startTime, setStartTime ] = React.useState(new Date())
 	const [ endDate, setEndDate ] = React.useState(new Date())
     const [ endTime, setEndTime ] = React.useState(new Date())
+
+    const navigation = useNavigation()
     
     const URL = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&limit=100'
 
     const BackAction = () => (
         <TopNavigationAction 
             icon={BackIcon}
-            onPress={ev => props.cancelSearch()}
+            onPress={ev => navigation.goBack()}
         />
     );
 
@@ -95,12 +100,14 @@ export default Search = (props) => {
     
     const onSubmit = () => {
         const orderBy = sortByTime ? '&orderby=time' : ''
-        const minmagnitude = '&minmagnitude=' + minMag
-        const maxmagnitude = '&maxmagnitude=' + maxMag
-        const starttime = enableStartTime ? '&starttime=' + startDate.getFullYear() + '-' + eval(startDate.getMonth() + 1) + '-' + startDate.getDate() + '-' + startTime.getHours() + '-' + startTime.getMinutes() : ''
-        const endtime = enableEndTime ? '&endtime=' + endDate.getFullYear() + '-' + eval(endDate.getMonth() + 1) + '-' + endDate.getDate() + '-' + endTime.getHours() + '-' + endTime.getMinutes() : ''
+        const minmagnitude = `&minmagnitude=${minMag}`
+        const maxmagnitude = `&maxmagnitude=${maxMag}`
+        const starttime = enableStartTime ? `&starttime=${startDate.getFullYear()}-${eval(startDate.getMonth() + 1)}-${startDate.getDate()}-${startTime.getHours()}-${startTime.getMinutes()}` : ''
+        const endtime = enableEndTime ? `&endtime=${endDate.getFullYear()}-${eval(endDate.getMonth() + 1)}-${endDate.getDate()}-${endTime.getHours()}-${endTime.getMinutes()}`: ''
         const newURL = URL + orderBy + minmagnitude + maxmagnitude + starttime + endtime
-        props.searchCallBack(newURL)
+        console.log(newURL)
+        navigation.goBack()
+        props.route.params.getDataCallBack(newURL)
     }
 
     const RenderMagRange = () => {

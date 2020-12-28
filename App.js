@@ -13,8 +13,8 @@ import { CardStyleInterpolators } from '@react-navigation/stack';
 
 import BottomNavigation from './components/BottomNav'
 import DetailScreen from './screens/Detail'
-import SearchScreen from './screens/Search'
 import HomeScreen from './screens/Home'
+import SearchScreen from './screens/Search'
 
 //redux
 import { Provider } from "react-redux";
@@ -43,38 +43,38 @@ const App = () => {
 									headerShown: false,
 								}}
 							>
-							<Stack.Screen 
-								name="Main" 
-								component={BottomNavigation}
-							/>
-							<Stack.Screen 
-								name="Home" 
-								component={HomeScreen}
-							/>
-							<Stack.Screen 
-								name="Detail" 
-								component={DetailScreen} 
-								options={{
-									cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-									transitionSpec: {
-										open:animationConfig,
-										close:animationConfig
-									}
-								}}
-							/>
-							<Stack.Screen 
-								name="Search" 
-								component={SearchScreen} 
-								options={{
-									cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
-									gestureEnabled:true,
-									gestureDirection:'vertical',
-									transitionSpec: {
-										open:animationConfig,
-										close:animationConfig
-									}
-								}}
-							/>
+								<Stack.Screen 
+									name="Main" 
+									component={BottomNavigation}
+								/>
+								<Stack.Screen 
+									name="Home" 
+									component={HomeScreen}
+								/>
+								<Stack.Screen 
+									name="Detail" 
+									component={DetailScreen} 
+									options={{
+										cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+										transitionSpec: {
+											open:animationConfig,
+											close:animationConfig
+										}
+									}}
+								/>
+								<Stack.Screen 
+									name="Search" 
+									component={SearchScreen} 
+									options={{
+										cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+										gestureEnabled:true,
+										gestureDirection:'vertical',
+										transitionSpec: {
+											open:animationConfig,
+											close:animationConfig
+										}
+									}}
+								/>
 							</Stack.Navigator>
 						</NavigationContainer>
 					</Root>
@@ -85,7 +85,7 @@ const App = () => {
 
 const animationConfig = {
 	animation: 'spring',
-  config: {
+  	config: {
     stiffness: 1000,
     damping: 500,
     mass: 3,

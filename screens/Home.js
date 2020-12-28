@@ -20,16 +20,21 @@ import AsyncStorage from '@react-native-community/async-storage';
 import Modal from 'react-native-modal';
 import { Toast, Popup } from 'popup-ui'
 
+// navigation
+import { useNavigation } from '@react-navigation/native';
+
 const SearchIcon = (props) => (
 	<Icon {...props} name='search-outline' />
 )
 
-export default Home = () => {
+export default Home = (props) => {
 
-  const [ data, setData ] = React.useState([])
+  	const [ data, setData ] = React.useState([])
 	const [ loading, setLoading ] = React.useState(true)
 	const [ refreshing, setRefreshing ] = React.useState(false)
 	const [ searchVisible, setSearchVisible ] = React.useState(false)
+
+	const navigation = useNavigation()
 
 	const URL = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&limit=100'
 
@@ -92,7 +97,7 @@ export default Home = () => {
 	}
 	
 	const renderRightActions = () => (
-		<TopNavigationAction icon={SearchIcon} onPress={toggleSearch}/>
+		<TopNavigationAction icon={SearchIcon} onPress={() => { navigation.push('Search', { getDataCallBack: getData })}} />
 	);
 
 	const toggleSearch = () => {
@@ -105,6 +110,7 @@ export default Home = () => {
 	}
 
 	React.useEffect(() => {
+		console.log(props)
 		const cacheData = cache.get("data")
 		setTimeout(() => {
 			if(cacheData === null || cacheData._W === undefined || cacheData._W === null) {
@@ -114,7 +120,7 @@ export default Home = () => {
 				setData(cacheData._W)
 				setLoading(false)
 				
-				// get data silencly (without loading animation and popup)
+				// fetch data silencly (without loading and refreshing animation)
 				getData(URL, true)
 			}
 		}, 100)
