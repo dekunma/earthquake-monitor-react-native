@@ -12,7 +12,6 @@ import HomeScreen from '../screens/Home'
 import GraphScreen from '../screens/Graph'
 import AboutScreen from '../screens/About'
 
-
 const styles = StyleSheet.create({
   bottomNavigation: {
     position:'absolute',

@@ -5,7 +5,6 @@ import { MapView, MapType } from "react-native-amap3d";
 export default About = () => {
     return(
         <React.Fragment>
-            {/* <Text>The Graph Page (WIP)</Text> */}
             <View>
                 <MapView
                     locationEnabled

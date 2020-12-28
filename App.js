@@ -4,7 +4,6 @@ import React from 'react'
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider, IconRegistry} from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
-// import { default as mapping } from './themeMapping.json'
 
 //navigator
 import 'react-native-gesture-handler';
@@ -29,63 +28,58 @@ const Stack = createStackNavigator();
 const App = () => {
 
     return(
-        <>
-					<Provider store={store}>
-						
-						<IconRegistry icons={EvaIconsPack} />
-							<ApplicationProvider 
-								{...eva} 
-								theme={eva.light}
-								// customMapping={mapping}
+		<Provider store={store}>
+			<IconRegistry icons={EvaIconsPack} />
+				<ApplicationProvider 
+					{...eva} 
+					theme={eva.light}
+				>
+					{/* Root for Toast (bottom pop up) */}
+					<Root>
+						<NavigationContainer>
+							<Stack.Navigator 
+								initialRouteName="Main" 
+								screenOptions={{
+									headerShown: false,
+								}}
 							>
-								{/* Root for Toast (bottom pop up) */}
-								<Root>
-									<NavigationContainer>
-										<Stack.Navigator 
-											initialRouteName="Main" 
-											screenOptions={{
-												headerShown: false,
-											}}
-										>
-										<Stack.Screen 
-											name="Main" 
-											component={BottomNavigation}
-										/>
-										<Stack.Screen 
-											name="Home" 
-											component={HomeScreen}
-										/>
-										<Stack.Screen 
-											name="Detail" 
-											component={DetailScreen} 
-											options={{
-												cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-												transitionSpec: {
-													open:animationConfig,
-													close:animationConfig
-												}
-											}}
-										/>
-										<Stack.Screen 
-											name="Search" 
-											component={SearchScreen} 
-											options={{
-												cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
-												gestureEnabled:true,
-												gestureDirection:'vertical',
-												transitionSpec: {
-													open:animationConfig,
-													close:animationConfig
-												}
-											}}
-										/>
-										</Stack.Navigator>
-									</NavigationContainer>
-								</Root>
-						</ApplicationProvider>
-					</Provider>
-					
-        </>
+							<Stack.Screen 
+								name="Main" 
+								component={BottomNavigation}
+							/>
+							<Stack.Screen 
+								name="Home" 
+								component={HomeScreen}
+							/>
+							<Stack.Screen 
+								name="Detail" 
+								component={DetailScreen} 
+								options={{
+									cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+									transitionSpec: {
+										open:animationConfig,
+										close:animationConfig
+									}
+								}}
+							/>
+							<Stack.Screen 
+								name="Search" 
+								component={SearchScreen} 
+								options={{
+									cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+									gestureEnabled:true,
+									gestureDirection:'vertical',
+									transitionSpec: {
+										open:animationConfig,
+										close:animationConfig
+									}
+								}}
+							/>
+							</Stack.Navigator>
+						</NavigationContainer>
+					</Root>
+			</ApplicationProvider>
+		</Provider>
     )
 }
 

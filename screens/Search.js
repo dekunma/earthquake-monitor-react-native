@@ -10,13 +10,6 @@ import { Col, Row, Grid } from "react-native-easy-grid";
 
 import moment from 'moment'
 
-//redux
-import { useDispatch, useSelector } from 'react-redux'
-
-const obj = {
-    key1:'key1'
-}
-
 export default Search = (props) => {
 
 	const styles = useStyleSheet(themedStyles);
@@ -40,7 +33,7 @@ export default Search = (props) => {
     const BackAction = () => (
         <TopNavigationAction 
             icon={BackIcon}
-            onPress={ev => props.goBack()}
+            onPress={ev => props.cancelSearch()}
         />
     );
 
@@ -117,11 +110,13 @@ export default Search = (props) => {
                 <Text style={styles.descriptionText}>Sift data by limiting minimum and maximum earthquake magnitude</Text>
 
                 <Card style={{marginTop: 10}}>
+
+                    {/* 这坨就这样吧分开写有问题反正也不会有人看到这坨代码吧哈哈 */}
                     <Grid style={{marginBottom:20}}>
-                        <Col><Text style={styles.subTitleText}>Minimum Magnitude:</Text></Col>
+                        <Col><Text style={styles.subTitleText}>{'Minimum Magnitude:'}</Text></Col>
                         <Col><Text style={{textAlign:'right'}}>{minMag} ML</Text></Col>
                     </Grid>
-                    
+                        
                     <Slider
                         style={{width: '100%', height: 40}}
                         minimumValue={0}
@@ -129,13 +124,14 @@ export default Search = (props) => {
                         minimumTrackTintColor={androidGreen}
                         maximumTrackTintColor="#000000"
                         onValueChange={ev => handleChangeMinMag(ev)}
-                    />
+                        value={0}
+                    /> 
 
                     <Grid style={{marginBottom:20}}>
-                        <Col><Text style={styles.subTitleText}>Maximum Magnitude:</Text></Col>
+                        <Col><Text style={styles.subTitleText}>{'Maximum Magnitude:'}</Text></Col>
                         <Col><Text style={{textAlign:'right'}}>{maxMag} ML</Text></Col>
                     </Grid>
-
+                        
                     <Slider
                         style={{width: '100%', height: 40}}
                         minimumValue={0}
@@ -144,8 +140,9 @@ export default Search = (props) => {
                         maximumTrackTintColor="#000000"
                         onValueChange={ev => handleChangeMaxMag(ev)}
                         value={12}
-                    />  
+                    /> 
                 </Card>
+
             </React.Fragment>
         )
     }
@@ -168,157 +165,117 @@ export default Search = (props) => {
         )
     }
 
-    const RenderStartTime = () => {
+    const RenderTimeDatePicker = (props) => {
+        let { enabled } = props
         return (
-            <React.Fragment>
-                <Text style={styles.subTitleText}>Set Start Time</Text>
-                <Text style={styles.descriptionText}>You can sift earthquake data by setting start time</Text>
+            <> 
+                <Text style={styles.subTitleText}>{props.title}</Text>
+                <Text style={styles.descriptionText}>{props.subTitle}</Text>
 
                 <Card style={{marginTop:10, marginBottom:30}}>
                     <View style={{height:120}}>
                         <Grid>
                             <Row>
-                                <Col><Text style={{fontSize:15, fontWeight:'bold', color: enableStartTime ? 'black' : 'gray'}}>Enable start time</Text></Col>
+                                <Col><Text style={{fontSize:15, fontWeight:'bold', color: enabled ? 'black' : 'gray'}}>{props.cardTitle}</Text></Col>
                                 <Col>
                                     <Switch
                                         trackColor={{ false: "#c4c4c4", true: "#4ea381" }}
                                         thumbColor={androidGreen}
-                                        onValueChange={handleChangeEnableStartTime}
-                                        value={enableStartTime}
+                                        onValueChange={props.onEnableChange}
+                                        value={enabled}
                                     />
                                 </Col>
                             </Row>
 
                             <Row>
-                                <Col size={6}><Text style={{textAlign:'center', color:enableStartTime ? 'black' : 'grey'}}>{moment(startDate).format('MMMM Do YYYY')}</Text></Col>
+                                <Col size={6}><Text style={{textAlign:'center', color:enabled ? 'black' : 'grey'}}>{moment(props.date).format('MMMM Do YYYY')}</Text></Col>
                                 <Col size={1} />
-                                <Col size={6}><Text style={{textAlign:'center', color:enableStartTime ? 'black' : 'grey'}}>{moment(startTime).format('h:mm A')}</Text></Col>
+                                <Col size={6}><Text style={{textAlign:'center', color:enabled ? 'black' : 'grey'}}>{moment(props.time).format('h:mm A')}</Text></Col>
                             </Row>
 
                             <Row>
                                 <Col size={6}>
                                     <Button 
-										disabled={!enableStartTime} 
+										disabled={!enabled} 
 										title="Pick Date" 
 										color={androidGreen}
-										onPress={ev => showStartPicker('date', ev)}
+										onPress={ev => props.showPicker('date', ev)}
 									/>
                                 </Col>
                                 <Col size={1}/>
                                 <Col size={6}>
 									<Button 
-										disabled={!enableStartTime} 
+										disabled={!enabled} 
 										title="Pick Time" 
 										color={androidGreen}
-										onPress={ev => showStartPicker('time', ev)}
+										onPress={ev => props.showPicker('time', ev)}
 									/>
 								</Col>
                             </Row>
 
-                            {showStartDatePicker && (
+                            {props.showDatePicker && (
                                 <DateTimePicker
 									testID="datePicker"
-									value={startDate}
+									value={props.date}
 									mode='date'
 									is24Hour={true}
 									display="default"
-									onChange={(ev, selectedTime) => onChangeStartTime(ev, selectedTime, 'date')}
+									onChange={(ev, selectedTime) => props.onChange(ev, selectedTime, 'date')}
 								/>
                             )}
 
-							{showStartTimePicker && (
+							{props.showTimePicker && (
                                 <DateTimePicker
 									testID="timePicker"
-									value={startTime}
+									value={props.time}
 									mode='time'
 									is24Hour={false}
 									display="default"
-									onChange={(ev, selectedTime) => onChangeStartTime(ev, selectedTime, 'time')}
+									onChange={(ev, selectedTime) => props.onChange(ev, selectedTime, 'time')}
 								/>
                             )}
                         </Grid>
                     </View>
-                    
-                    
                 </Card>
-            </React.Fragment>
+            </>
+        )
+    }
+
+    const RenderStartTime = () => {
+        return (
+            <RenderTimeDatePicker 
+                title={'Set Start Time'}
+                subTitle={'You can sift earthquake data by setting start time'}
+                enabled={enableStartTime}
+                cardTitle={'Enable start time'}
+                onEnableChange={handleChangeEnableStartTime}
+                showPicker={showStartPicker}
+                showDatePicker={showStartDatePicker}
+                showTimePicker={showStartTimePicker}
+                onChange={onChangeStartTime}
+                date={startDate}
+                time={startTime}
+            />
         )
 	}
 	
 	const RenderEndTime = () => {
 		return (
-            <React.Fragment>
-                <Text style={styles.subTitleText}>Set End Time</Text>
-                <Text style={styles.descriptionText}>You can sift earthquake data by setting end time</Text>
-
-                <Card style={{marginTop:10, marginBottom:30}}>
-                    <View style={{height:120}}>
-                        <Grid>
-                            <Row>
-                                <Col><Text style={{fontSize:15, fontWeight:'bold', color: enableEndTime ? 'black' : 'gray'}}>Enable end time</Text></Col>
-                                <Col>
-                                    <Switch
-                                        trackColor={{ false: "#c4c4c4", true: "#4ea381" }}
-                                        thumbColor={androidGreen}
-                                        onValueChange={handleChangeEnableEndTime}
-                                        value={enableEndTime}
-                                    />
-                                </Col>
-                            </Row>
-
-                            <Row>
-                                <Col size={6}><Text style={{textAlign:'center', color:enableEndTime ? 'black' : 'grey'}}>{moment(endDate).format('MMMM Do YYYY')}</Text></Col>
-                                <Col size={1} />
-                                <Col size={6}><Text style={{textAlign:'center', color:enableEndTime ? 'black' : 'grey'}}>{moment(endTime).format('h:mm A')}</Text></Col>
-                            </Row>
-
-                            <Row>
-                                <Col size={6}>
-                                    <Button 
-										disabled={!enableEndTime} 
-										title="Pick Date" 
-										color={androidGreen}
-										onPress={ev => showEndPicker('date', ev)}
-									/>
-                                </Col>
-                                <Col size={1}/>
-                                <Col size={6}>
-									<Button 
-										disabled={!enableEndTime} 
-										title="Pick Time" 
-										color={androidGreen}
-										onPress={ev => showEndPicker('time', ev)}
-									/>
-								</Col>
-                            </Row>
-
-                            {showEndDatePicker && (
-                                <DateTimePicker
-									testID="datePicker"
-									value={startDate}
-									mode='date'
-									is24Hour={true}
-									display="default"
-									onChange={(ev, selectedTime) => onChangeEndTime(ev, selectedTime, 'date')}
-								/>
-                            )}
-
-							{showEndTimePicker && (
-                                <DateTimePicker
-									testID="timePicker"
-									value={startTime}
-									mode='time'
-									is24Hour={false}
-									display="default"
-									onChange={(ev, selectedTime) => onChangeEndTime(ev, selectedTime, 'time')}
-								/>
-                            )}
-                        </Grid>
-                    </View>
-                    
-                    
-                </Card>
-            </React.Fragment>
+            <>
+                <RenderTimeDatePicker 
+                    title={'Set End Time'}
+                    subTitle={'You can sift earthquake data by setting end time'}
+                    enabled={enableEndTime}
+                    cardTitle={'Enable end time'}
+                    onEnableChange={handleChangeEnableEndTime}
+                    showPicker={showEndPicker}
+                    showDatePicker={showEndDatePicker}
+                    showTimePicker={showEndTimePicker}
+                    onChange={onChangeEndTime}
+                    date={endDate}
+                    time={endTime}
+                />
+            </>
         )
 	}
 
