@@ -7,15 +7,13 @@ import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
+import com.facebook.react.BuildConfig;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 // react-native-splash-screen >= 0.3.1
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
-
-// navbar color
-import com.thebylito.navigationbarcolor.NavigationBarColorPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
