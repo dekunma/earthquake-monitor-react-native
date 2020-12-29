@@ -31,8 +31,7 @@ import { Appearance, useColorScheme } from 'react-native-appearance';
 import SplashScreen from 'react-native-splash-screen'
 
 // configure navBar color
-import NavigationBar from 'react-native-navbar-color'
-
+import changeNavigationBarColor from 'react-native-navigation-bar-color';
 /**
  * Get the current color scheme
  */
@@ -49,7 +48,7 @@ const App = () => {
 
 	React.useEffect(() => {
 		SplashScreen.hide()
-		NavigationBar.setColor(barColor)
+		changeNavigationBarColor(barColor)
 	}, [])
 
     return(
