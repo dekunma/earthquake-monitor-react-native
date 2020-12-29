@@ -13,9 +13,10 @@ import moment from 'moment'
 // navigation
 import { useNavigation } from '@react-navigation/native';
 
-export default Search = (props) => {
+// configure color scheme
+import { useColorScheme } from 'react-native-appearance';
 
-	const styles = useStyleSheet(themedStyles);
+export default Search = (props) => {
 
     const [ minMag, setMinMag ] = React.useState(0)
     const [ maxMag, setMaxMag ] = React.useState(12.0)
@@ -32,7 +33,13 @@ export default Search = (props) => {
     const [ endTime, setEndTime ] = React.useState(new Date())
 
     const navigation = useNavigation()
+    const colorScheme = useColorScheme()
     
+    const combinedStyles = colorScheme === 'light' ? {...commonStyles, ...lightStyles} : {...commonStyles, ...darkStyles}
+    const enabledTextColor = colorScheme === 'light' ? 'black' : 'white'
+    const disableButtonColor = colorScheme == 'light' ? '#dfdfdf' : 'grey'
+    const styles = useStyleSheet(combinedStyles);
+
     const URL = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&limit=100'
 
     const BackAction = () => (
@@ -75,12 +82,12 @@ export default Search = (props) => {
 	const onChangeStartTime = (ev, selectedTime, mode) => {
 		if(mode === 'date') {
 			setShowStartDatePicker(false)
-			const currentDate = selectedTime || date;
+			const currentDate = selectedTime || startDate;
 			setStartDate(currentDate);
 		}
 		else {
 			setShowStartTimePicker(false)
-			const currentTime = selectedTime || time
+			const currentTime = selectedTime || startTime
 			setStartTime(currentTime)
 		}
 	}
@@ -88,12 +95,12 @@ export default Search = (props) => {
 	const onChangeEndTime = (ev, selectedTime, mode) => {
 		if(mode === 'date') {
 			setShowEndDatePicker(false)
-			const currentDate = selectedTime || date;
+			const currentDate = selectedTime || startDate;
 			setEndDate(currentDate);
 		}
 		else {
 			setShowEndTimePicker(false)
-			const currentTime = selectedTime || time
+			const currentTime = selectedTime || startTime
 			setEndTime(currentTime)
 		}
     }
@@ -114,7 +121,7 @@ export default Search = (props) => {
         return (
             <React.Fragment>
                 <Text style={styles.subTitleText}>Magnitude Range</Text>
-                <Text style={styles.descriptionText}>Sift data by limiting minimum and maximum earthquake magnitude</Text>
+                <Text style={styles.descriptionText}>Filter data by limiting minimum and maximum earthquake magnitude</Text>
 
                 <Card style={{marginTop: 10}}>
 
@@ -158,7 +165,7 @@ export default Search = (props) => {
         return(
             <Card style={{marginTop:30, height:55, marginBottom:30}}>
                 <Grid>
-                    <Col><Text style={{fontSize:15, fontWeight:'bold', color: sortByTime ? 'black' : 'gray'}}>Sort By Time</Text></Col>
+                    <Col><Text style={{fontSize:15, fontWeight:'bold', color: sortByTime ? enabledTextColor : 'gray'}}>Sort By Time</Text></Col>
                     <Col>
                         <Switch
                             trackColor={{ false: "#c4c4c4", true: "#4ea381" }}
@@ -183,7 +190,7 @@ export default Search = (props) => {
                     <View style={{height:120}}>
                         <Grid>
                             <Row>
-                                <Col><Text style={{fontSize:15, fontWeight:'bold', color: enabled ? 'black' : 'gray'}}>{props.cardTitle}</Text></Col>
+                                <Col><Text style={{fontSize:15, fontWeight:'bold', color: enabled ? enabledTextColor : 'gray'}}>{props.cardTitle}</Text></Col>
                                 <Col>
                                     <Switch
                                         trackColor={{ false: "#c4c4c4", true: "#4ea381" }}
@@ -195,27 +202,25 @@ export default Search = (props) => {
                             </Row>
 
                             <Row>
-                                <Col size={6}><Text style={{textAlign:'center', color:enabled ? 'black' : 'grey'}}>{moment(props.date).format('MMMM Do YYYY')}</Text></Col>
+                                <Col size={6}><Text style={{textAlign:'center', color:enabled ? enabledTextColor : 'grey'}}>{moment(props.date).format('MMMM Do YYYY')}</Text></Col>
                                 <Col size={1} />
-                                <Col size={6}><Text style={{textAlign:'center', color:enabled ? 'black' : 'grey'}}>{moment(props.time).format('h:mm A')}</Text></Col>
+                                <Col size={6}><Text style={{textAlign:'center', color:enabled ? enabledTextColor : 'grey'}}>{moment(props.time).format('h:mm A')}</Text></Col>
                             </Row>
 
                             <Row>
                                 <Col size={6}>
                                     <Button 
-										disabled={!enabled} 
 										title="Pick Date" 
-										color={androidGreen}
-										onPress={ev => props.showPicker('date', ev)}
+										color={enabled ? androidGreen : disableButtonColor}
+										onPress={enabled ? ev => props.showPicker('date', ev) : () => {}}
 									/>
                                 </Col>
                                 <Col size={1}/>
                                 <Col size={6}>
 									<Button 
-										disabled={!enabled} 
 										title="Pick Time" 
-										color={androidGreen}
-										onPress={ev => props.showPicker('time', ev)}
+										color={enabled ? androidGreen : disableButtonColor}
+										onPress={enabled ? ev => props.showPicker('time', ev) : () => {}}
 									/>
 								</Col>
                             </Row>
@@ -252,7 +257,7 @@ export default Search = (props) => {
         return (
             <RenderTimeDatePicker 
                 title={'Set Start Time'}
-                subTitle={'You can sift earthquake data by setting start time'}
+                subTitle={'You can filter earthquake data by setting start time'}
                 enabled={enableStartTime}
                 cardTitle={'Enable start time'}
                 onEnableChange={handleChangeEnableStartTime}
@@ -271,7 +276,7 @@ export default Search = (props) => {
             <>
                 <RenderTimeDatePicker 
                     title={'Set End Time'}
-                    subTitle={'You can sift earthquake data by setting end time'}
+                    subTitle={'You can filter earthquake data by setting end time'}
                     enabled={enableEndTime}
                     cardTitle={'Enable end time'}
                     onEnableChange={handleChangeEnableEndTime}
@@ -313,7 +318,7 @@ const BackIcon = (props) => (
     <Icon {...props} name='arrow-downward-outline'/>
 );
 
-const themedStyles = StyleService.create({
+const commonStyles = StyleService.create({
     titleText: {
         fontSize:20,
         fontWeight:'bold'
@@ -322,6 +327,17 @@ const themedStyles = StyleService.create({
         fontSize:15,
         fontWeight:'bold'
     },
+
+})
+
+const darkStyles = StyleService.create({
+    descriptionText: {
+        fontSize:12,
+        color: 'rgba(255,255,255,0.5)'
+    }
+})
+
+const lightStyles = StyleService.create({
     descriptionText: {
         fontSize:12,
         color: 'rgba(0,0,0,0.5)'

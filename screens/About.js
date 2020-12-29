@@ -15,52 +15,55 @@ export default About = () => {
 
     const colorScheme = useColorScheme();
 
-    const themedStyles = StyleService.create({
-        headerLight: {
+    const lightStyles = StyleService.create({
+        header: {
             fontWeight: 'bold',
             fontSize: 30,
             textAlign: 'center',
             marginBottom: 10,
         },
-        headerDark: {
-            fontWeight: 'bold',
-            fontSize: 30,
-            textAlign: 'center',
-            marginBottom: 10,
-            color: 'white'
-        },
-        normalTextLight: {
+        normalText: {
             fontSize: 17,
             textAlign: 'center',
             color: 'rgba(0,0,0,0.6)',
             marginBottom: 10,
         },
-        normalTextDark: {
-            fontSize: 17,
-            textAlign: 'center',
-            color: 'rgba(255,255,255,0.6)',
-            marginBottom: 10,
-        },
-        longTextLight: {
+        longText: {
             fontSize: 17,
             textAlign: 'justify',
             color: 'rgba(0,0,0,0.6)',
-            marginBottom: 10,
-        },   
-        longTextDark: {
-            fontSize: 17,
-            textAlign: 'justify',
-            color: 'rgba(255,255,255,0.6)',
             marginBottom: 10,
         },                 
-        subHeaderLight: {
+        subHeader: {
             fontWeight: 'bold',
             fontSize: 17,
             textAlign: 'center',
             marginBottom: 10,
             color: 'rgba(0,0,0,0.6)'
         },
-        subHeaderDark: {
+    })
+
+    const darkStyles = StyleService.create({
+        header: {
+            fontWeight: 'bold',
+            fontSize: 30,
+            textAlign: 'center',
+            marginBottom: 10,
+            color: 'white'
+        },
+        normalText: {
+            fontSize: 17,
+            textAlign: 'center',
+            color: 'rgba(255,255,255,0.6)',
+            marginBottom: 10,
+        }, 
+        longText: {
+            fontSize: 17,
+            textAlign: 'justify',
+            color: 'rgba(255,255,255,0.6)',
+            marginBottom: 10,
+        },                 
+        subHeader: {
             fontWeight: 'bold',
             fontSize: 17,
             textAlign: 'center',
@@ -69,7 +72,7 @@ export default About = () => {
         },
     })
 
-    const styles = useStyleSheet(themedStyles);
+    const styles = colorScheme === 'light' ? useStyleSheet(lightStyles) : useStyleSheet(darkStyles);
 
     return(
         <Layout level='2' style={{height:'100%', paddingLeft:40, paddingRight: 40}}>
@@ -77,24 +80,24 @@ export default About = () => {
                 <Image source={LogoImage} style={{width:90, height:90, borderRadius: 5}}/>
             </View>
             
-            <Text style={colorScheme === 'light' ? styles.headerLight : styles.headerDark}>Earthquake Monitor</Text>
-            <Text style={colorScheme === 'light' ? styles.normalTextLight : styles.normalTextDark}>Get earthquake information in time</Text>
-            <Text style={colorScheme === 'light' ? styles.normalTextLight : styles.normalTextDark}>VER {appInfo.version}</Text>
-            <Text style={colorScheme === 'light' ? styles.longTextLight : styles.longTextDark}>If you encountered any unsolvable problem (or bug) when using our app, please contact us with the following information. We will contact you as soon as possible.</Text>
+            <Text style={styles.header}>Earthquake Monitor</Text>
+            <Text style={styles.normalText}>Get earthquake information in time</Text>
+            <Text style={styles.normalText}>VER {appInfo.version}</Text>
+            <Text style={styles.longText}>If you encountered any unsolvable problem (or bug) when using our app, please contact us with the following information. We will contact you as soon as possible.</Text>
             
-            <Text style={colorScheme === 'light' ? styles.normalTextLight : styles.normalTextDark}>Email: William@dekun.me</Text>
-            <Text style={colorScheme === 'light' ? styles.normalTextLight : styles.normalTextDark}>WeChat: Magnoliae_Flos </Text>
+            <Text style={styles.normalText}>Email: William@dekun.me</Text>
+            <Text style={styles.normalText}>WeChat: Magnoliae_Flos </Text>
 
-            <Text style={colorScheme === 'light' ? styles.subHeaderLight : styles.subHeaderDark}>UI</Text>
-            <Text style={colorScheme === 'light' ? styles.normalTextLight : styles.normalTextDark}>威廉母马</Text>
-            <Text style={colorScheme === 'light' ? styles.subHeaderLight : styles.subHeaderDark}>Icons</Text>
-            <Text style={colorScheme === 'light' ? styles.normalTextLight : styles.normalTextDark}>老腊肉</Text>
-            <Text style={colorScheme === 'light' ? styles.subHeaderLight : styles.subHeaderDark}>Development</Text>
-            <Text style={colorScheme === 'light' ? styles.normalTextLight : styles.normalTextDark}>威廉母马</Text>
-            <Text style={colorScheme === 'light' ? styles.subHeaderLight : styles.subHeaderDark}>Support</Text>
-            <Text style={colorScheme === 'light' ? styles.normalTextLight : styles.normalTextDark}>老腊肉</Text>
+            <Text style={styles.subHeader}>UI</Text>
+            <Text style={styles.normalText}>威廉母马</Text>
+            <Text style={styles.subHeader}>Icons</Text>
+            <Text style={styles.normalText}>老腊肉</Text>
+            <Text style={styles.subHeader}>Development</Text>
+            <Text style={styles.normalText}>威廉母马</Text>
+            <Text style={styles.subHeader}>Support</Text>
+            <Text style={styles.normalText}>老腊肉</Text>
             {/* 在这儿放个女朋友的名字应该也没人会注意到吧嘻嘻 */}
-            <Text style={colorScheme === 'light' ? styles.normalTextLight : styles.normalTextDark}>Vivian</Text>
+            <Text style={styles.normalText}>Vivian</Text>
         </Layout>
     )
 }

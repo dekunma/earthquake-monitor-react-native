@@ -3,9 +3,14 @@ import { ScrollView, View } from "react-native";
 
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 
+// configure color scheme
+import { useColorScheme } from 'react-native-appearance';
+
 export default Loading = () => {
 
     const [ skeletons, setSkeletons ] = React.useState([])
+
+    const colorScheme = useColorScheme()
 
     React.useEffect(() => {
         var skeletons = []
@@ -16,8 +21,8 @@ export default Loading = () => {
     }, [])
 
     return(
-        <SkeletonPlaceholder speed={1500}>
-            <ScrollView style={{ alignItems:'center' }}>
+        <SkeletonPlaceholder speed={1500} backgroundColor={colorScheme === 'dark' ? '#212b46' : '#E1E9EE'} highlightColor={colorScheme === 'dark' ? '#2d3a5e' : '#F2F8FC'}>
+            <ScrollView style={{ alignItems:'center'}}>
                 {skeletons.map(elem => (
                     <View 
                         key= {elem} 

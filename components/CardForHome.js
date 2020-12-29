@@ -16,9 +16,13 @@ import handleChangeDetail from '../actions/handleChangeDetail'
 import handleChangeGeometry from '../actions/handleChangeGeometry'
 import handleChangeColor from '../actions/handleChangeColor'
 
+// configure color scheme
+import { useColorScheme } from 'react-native-appearance';
+
 export default CardForHome = (props) => {
 
 	const dispatch = useDispatch()
+	const colorScheme = useColorScheme()
 	
 	const themedStyles = StyleService.create({
 		layout: {
@@ -168,7 +172,7 @@ export default CardForHome = (props) => {
 							progress={props.mag / 10} 
 							width={null} 
 							height={2}
-							borderColor={'white'}
+							borderColor={colorScheme === 'dark' ? '#212b46' : 'white'}
 							color={props.color}
 							unfilledColor={'#D9D9DE'}
 						/>
@@ -176,8 +180,6 @@ export default CardForHome = (props) => {
 
 				</Layout>	
 			</React.Fragment>
-			
-				
 	) 
 }
 

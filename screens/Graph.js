@@ -9,6 +9,9 @@ import { Card, StyleService, useStyleSheet } from '@ui-kitten/components';
 // grid
 import { Row, Col, Grid } from "react-native-easy-grid";
 
+// configure color scheme
+import { useColorScheme } from 'react-native-appearance';
+
 export default About = () => {
 
     const currentTime = new Date()
@@ -27,6 +30,8 @@ export default About = () => {
     const [ placeArr, setPlaceArr ] = React.useState([])
     const [ earthquakeData, setEarthquakeData ] = React.useState([])
     const [ clickedPos, setClickedPos ] = React.useState('')
+
+    const colorScheme = useColorScheme()
 
 
     React.useEffect(() => {
@@ -68,7 +73,7 @@ export default About = () => {
         setClickedPos(earthquakeData[idx].properties.place)
     }
 
-    const themedStyles = StyleService.create({
+    const lightStyles = StyleService.create({
         card: {
             position:'absolute',
 			bottom:65,
@@ -86,50 +91,64 @@ export default About = () => {
 			
 			elevation: 4,
         },
-        upperLeftBigText: {
+        bigBoldText: {
             color: 'white',
             fontSize: 30,
-            fontWeight:'bold',
-        },
-        upperSmallText: {
-            color: 'white',
-            fontSize: 15
-        },
-        upperRightText: {
-            color: 'white',
-            fontSize: 15,
-            textAlign: 'right'
-        },
-        totalEarthQuakeText: {
-            color: 'white', 
-            fontSize: 20,
-            marginTop: 30
-        },
-        totalEarthQuakeNumber: {
-            color: 'white', 
             fontWeight:'bold', 
-            fontSize: 30
         },
-        theLargestText: {
-            color: 'white', 
-            fontSize: 20,
-            marginTop: 10
-        },
-        bottomNumLeft: {
-            fontWeight: 'bold',
-            fontSize: 30,
-            color: 'white',
-            textAlign: 'left'
-        },
-        bottomNumRight: {
-            fontWeight: 'bold',
-            fontSize: 30,
-            color: 'white',
-            textAlign: 'right'
-        },
-        bottomText: {
+        smallText: {
             color: 'white',
             fontSize: 15
+        },
+        subTitleText: {
+            color: 'white', 
+            fontSize: 20,
+        },
+        placeTextContainer: {
+            position: 'absolute',
+            top:15,
+            textAlign: 'center',
+            zIndex: 100,
+            width: '100%'
+        },
+        placeText: {
+            color: colors.yellow,
+            fontWeight: 'bold',
+            fontSize: 20,
+            textAlign: 'center'
+        }
+    })
+
+    const darkStyles = StyleService.create({
+        card: {
+            position:'absolute',
+			bottom:65,
+			backgroundColor:colors.yellow,
+			marginLeft:15,
+			width:'92%',
+            zIndex:100,
+            shadowColor: "#000",
+			shadowOffset: {
+				width: 0,
+				height: 3,
+			},
+			shadowOpacity: 0.5,
+			shadowRadius: 4.65,
+			
+			elevation: 4,
+        },
+        bigBoldText: {
+            color: 'black',
+            fontSize: 30,
+            fontWeight:'bold', 
+        },
+        smallText: {
+            color: 'black',
+            fontSize: 15
+        },
+        subTitleText: {
+            color: 'black', 
+            fontSize: 20,
         },
         placeTextContainer: {
             position: 'absolute',
@@ -146,7 +165,7 @@ export default About = () => {
         }
 	})
 
-	const styles = useStyleSheet(themedStyles);
+	const styles = colorScheme === 'light' ? useStyleSheet(lightStyles) : useStyleSheet(darkStyles)
 
     const RenderCard = () => {
 		return(
@@ -157,13 +176,13 @@ export default About = () => {
                             <Col >
                                 <Grid>
                                     <Col>
-                                        <Text style={styles.upperLeftBigText}>{averge}<Text style={styles.upperSmallText}>{` avg`}</Text></Text>
+                                        <Text style={styles.bigBoldText}>{averge}<Text style={styles.smallText}>{` avg`}</Text></Text>
                                         
                                     </Col>
 
                                     <Col> 
-                                        <Text style={styles.upperSmallText}>{theMaxMag} max</Text>
-                                        <Text style={styles.upperSmallText}>{theMinMag} min</Text>
+                                        <Text style={styles.smallText}>{theMaxMag} max</Text>
+                                        <Text style={styles.smallText}>{theMinMag} min</Text>
                                     </Col>
                                 </Grid>
                             </Col>
@@ -173,18 +192,20 @@ export default About = () => {
                             </Col>
                         </Row>
 
-                        <Text style={styles.totalEarthQuakeText}>In the past 24 hours, there were <Text style={styles.totalEarthQuakeNumber}>{earthquakeCount}</Text> big earthquakes globally</Text>
+                        <Text style={styles.subTitleText}>In the past 24 hours, there were <Text style={styles.bigBoldText}>{earthquakeCount}</Text> big earthquakes globally</Text>
+                        
+                        <View style={{marginTop:20}}></View>
 
-                        <Text style={styles.theLargestText}>The biggest one:</Text>
+                        <Text style={styles.subTitleText}>The biggest one:</Text>
                         <Row>
                             <Col> 
-                                <Text style={styles.bottomNumLeft}>{theMaxMag} <Text style={styles.bottomText}>mag</Text></Text> 
+                                <Text style={styles.bigBoldText}>{theMaxMag} <Text style={styles.smallText}>mag</Text></Text> 
                             </Col>
                             <Col> 
-                                <Text style={styles.bottomNumLeft}>{theMaxDepth} <Text style={styles.bottomText}>km deep</Text></Text> 
+                                <Text style={styles.bigBoldText}>{theMaxDepth} <Text style={styles.smallText}>km deep</Text></Text> 
                             </Col>
                             <Col> 
-                                <Text style={styles.bottomNumRight}>{theMaxAgo} <Text style={styles.bottomText}>hours ago</Text> </Text> 
+                                <Text style={styles.bigBoldText}>{theMaxAgo} <Text style={styles.smallText}>hours ago</Text> </Text> 
                             </Col>
 
                             {/* 为啥下面这种写法会crash掉整个program啊 */}
@@ -207,7 +228,7 @@ export default About = () => {
             
             <MapView
                 locationEnabled
-                mapType={MapType.Standard}
+                mapType={colorScheme === 'light' ? MapType.Standard : MapType.Night}
                 showsZoomControls={false}
                 style={{
                     width: '100%',

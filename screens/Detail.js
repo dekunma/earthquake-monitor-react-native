@@ -2,7 +2,7 @@ import React from 'react'
 import { Image } from 'react-native'
 
 //ui kitten
-import { Icon, Text, TopNavigation, TopNavigationAction, Card, StyleService, useStyleSheet } from '@ui-kitten/components';
+import { Icon, Text, TopNavigation, TopNavigationAction, Card, StyleService, useStyleSheet, Layout } from '@ui-kitten/components';
 
 //custom components
 import PinImage from '../images/pin.png'
@@ -18,6 +18,9 @@ import moment from 'moment'
 // grid
 import { Col, Grid } from "react-native-easy-grid";
 
+// configure color scheme
+import { useColorScheme } from 'react-native-appearance';
+
 const BackIcon = (props) => (
     <Icon {...props} name='arrow-back-outline'/>
 );
@@ -32,7 +35,7 @@ export default Detail = (props) => {
 	const [ long, setLong ] = React.useState(0)
 	const [ depth, setDepth ] = React.useState(0)
 
-	const themedStyles = StyleService.create({
+	const commonStyles = StyleService.create({
 		header: {
 			position:'absolute',
 			bottom:222,
@@ -52,10 +55,6 @@ export default Detail = (props) => {
 			
 			elevation: 6,
 		},
-		title:{
-			color:'white',
-			fontSize:13
-		},
 		body: {
 			position:'absolute',
 			bottom:68,
@@ -73,6 +72,60 @@ export default Detail = (props) => {
 			shadowRadius: 4.65,
 			
 			elevation: 6,
+		},
+		bodySub: {
+			color:'white',
+			fontSize: 15,
+		},
+		footerText: {
+			fontSize:13
+		},
+	})
+
+	const darkStyles = ({
+		title:{
+			color:'black',
+			fontSize:13
+		},
+		bodyTitle: {
+			color:'black',
+			fontSize: 18,
+			fontWeight:'bold'
+		},
+		bodySub: {
+			color:'black',
+			fontSize: 15,
+		},
+		footer: {
+			position:'absolute',
+			bottom:20,
+			borderTopEndRadius:0,
+			borderTopStartRadius:0,
+			backgroundColor:'#212b46',
+			marginLeft:15,
+			width:'92%',
+			zIndex:99,
+			shadowColor: "#000",
+			shadowOffset: {
+				width: 0,
+				height: 0,
+			},
+			shadowOpacity: 0.27,
+			shadowRadius: 4.65,
+			
+			elevation: 6,
+		},
+		statusText: {
+			textAlign: 'right',
+			color: 'rgba(0,0,0,0.4)',
+			fontWeight: 'bold'
+		}
+	})
+
+	const lightStyles = ({
+		title:{
+			color:'white',
+			fontSize:13
 		},
 		bodyTitle: {
 			color:'white',
@@ -102,9 +155,6 @@ export default Detail = (props) => {
 			
 			elevation: 6,
 		},
-		footerText: {
-			fontSize:13
-		},
 		statusText: {
 			textAlign: 'right',
 			color: 'rgba(255,255,255,0.4)',
@@ -112,7 +162,9 @@ export default Detail = (props) => {
 		}
 	})
 
-	const styles = useStyleSheet(themedStyles);
+	const colorScheme = useColorScheme()
+	const combinedStyles = colorScheme === 'light' ? {...commonStyles, ...lightStyles} : {...commonStyles, ...darkStyles}
+	const styles = useStyleSheet(combinedStyles);
 
 	React.useEffect(() => {
 		setLat(geometry.coordinates[1])
@@ -129,7 +181,7 @@ export default Detail = (props) => {
 
 	const RenderCard = () => {
 		return(
-			<React.Fragment>
+			<>
 				<Card appearance='filled' style={styles.header}>
 					<Text style={styles.title}>{details.title}</Text>
 				</Card>
@@ -146,11 +198,12 @@ export default Detail = (props) => {
 					</Grid>
 					
 				</Card>
-
-				<Card appearance='filled' style={styles.footer}>
-					<Text style={styles.footerText}>Updated At {moment(details.updated).format('MMMM Do YYYY, h:mm:ss a')}</Text>
-				</Card>
-			</React.Fragment>
+				
+				
+					<Card appearance='filled' style={styles.footer}>
+						<Text style={styles.footerText}>Updated At {moment(details.updated).format('MMMM Do YYYY, h:mm:ss a')}</Text>
+					</Card>
+			</>
 		)
 	}
 
