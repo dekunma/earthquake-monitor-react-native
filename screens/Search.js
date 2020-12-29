@@ -112,7 +112,6 @@ export default Search = (props) => {
         const starttime = enableStartTime ? `&starttime=${startDate.getFullYear()}-${eval(startDate.getMonth() + 1)}-${startDate.getDate()}-${startTime.getHours()}-${startTime.getMinutes()}` : ''
         const endtime = enableEndTime ? `&endtime=${endDate.getFullYear()}-${eval(endDate.getMonth() + 1)}-${endDate.getDate()}-${endTime.getHours()}-${endTime.getMinutes()}`: ''
         const newURL = URL + orderBy + minmagnitude + maxmagnitude + starttime + endtime
-        console.log(newURL)
         navigation.goBack()
         props.route.params.getDataCallBack(newURL)
     }

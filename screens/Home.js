@@ -110,7 +110,6 @@ export default Home = (props) => {
 	}
 
 	React.useEffect(() => {
-		console.log(props)
 		const cacheData = cache.get("data")
 		setTimeout(() => {
 			if(cacheData === null || cacheData._W === undefined || cacheData._W === null) {
