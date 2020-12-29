@@ -1,4 +1,5 @@
 import React from 'react'
+import { StatusBar } from 'react-native'
 
 //ui kitten
 import * as eva from '@eva-design/eva';
@@ -26,6 +27,12 @@ import { Root } from 'popup-ui'
 // configure color scheme
 import { Appearance, useColorScheme } from 'react-native-appearance';
 
+// splash screen
+import SplashScreen from 'react-native-splash-screen'
+
+// configure navBar color
+import NavigationBar from 'react-native-navbar-color'
+
 /**
  * Get the current color scheme
  */
@@ -35,27 +42,23 @@ const Stack = createStackNavigator();
 
 const App = () => {
 
-	const colorScheme = useColorScheme();
+	const colorScheme = useColorScheme()
+	const barColor = colorScheme === 'light' ? 'white' : '#212b46'
+	const barStyle = colorScheme == 'light' ? 'dark-content' : 'light-content'
 
-	/**
-	 * Subscribe to color scheme without a hook
-	 */
-	const subscription = Appearance.addChangeListener(({ colorScheme }) => {
-		setCurrentColorScheme(colorScheme)
-	});
-
-	const [ currentColorScheme, setCurrentColorScheme ] = React.useState('light');
 
 	React.useEffect(() => {
-		setCurrentColorScheme(colorScheme)
+		SplashScreen.hide()
+		NavigationBar.setColor(barColor)
 	}, [])
 
     return(
 		<Provider store={store}>
+			<StatusBar backgroundColor={barColor} barStyle={barStyle}/>
 			<IconRegistry icons={EvaIconsPack} />
 				<ApplicationProvider 
 					{...eva} 
-					theme={currentColorScheme === 'light' ? eva.light : eva.dark}
+					theme={colorScheme === 'light' ? eva.light : eva.dark}
 				>
 					{/* Root for Toast (bottom pop up) */}
 					<Root>

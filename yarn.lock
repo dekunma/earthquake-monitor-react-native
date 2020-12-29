@@ -5900,6 +5900,11 @@ react-native-modal@^11.6.1:
     prop-types "^15.6.2"
     react-native-animatable "1.3.3"
 
+react-native-navbar-color@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.npm.taobao.org/react-native-navbar-color/download/react-native-navbar-color-1.0.3.tgz#b796e728226804d405335df53a64a9ed4091d5a6"
+  integrity sha1-t5bnKCJoBNQFM131OmSp7UCR1aY=
+
 react-native-progress@^4.1.2:
   version "4.1.2"
   resolved "https://registry.npm.taobao.org/react-native-progress/download/react-native-progress-4.1.2.tgz#ffb2264ddfeba409c730e36a9791bb7bbe07a00d"
@@ -5936,6 +5941,11 @@ react-native-skeleton-placeholder@^2.0.7:
   version "2.0.7"
   resolved "https://registry.npm.taobao.org/react-native-skeleton-placeholder/download/react-native-skeleton-placeholder-2.0.7.tgz#a804358b6999a8ed05c35ef2e7ba1c53b50a9426"
   integrity sha1-qAQ1i2mZqO0Fw17y57ocU7UKlCY=
+
+react-native-splash-screen@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.npm.taobao.org/react-native-splash-screen/download/react-native-splash-screen-3.2.0.tgz#d47ec8557b1ba988ee3ea98d01463081b60fff45"
+  integrity sha1-1H7IVXsbqYjuPqmNAUYwgbYP/0U=
 
 react-native-svg@^12.1.0:
   version "12.1.0"
