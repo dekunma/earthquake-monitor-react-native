@@ -27,6 +27,7 @@
     "react": "16.13.1",
     "react-native": "0.63.0",
     "react-native-amap3d": "^2.0.1",
+    "react-native-appearance": "^0.3.4",
     "react-native-cache": "^2.0.0-rc.5",
     "react-native-easy-grid": "^0.2.2",
     "react-native-gesture-handler": "^1.6.1",

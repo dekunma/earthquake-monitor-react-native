@@ -15,6 +15,9 @@ import { MapView, MapType } from "react-native-amap3d";
 
 import moment from 'moment'
 
+// grid
+import { Col, Grid } from "react-native-easy-grid";
+
 const BackIcon = (props) => (
     <Icon {...props} name='arrow-back-outline'/>
 );
@@ -32,7 +35,7 @@ export default Detail = (props) => {
 	const themedStyles = StyleService.create({
 		header: {
 			position:'absolute',
-			bottom:208,
+			bottom:222,
 			backgroundColor:color,
 			borderBottomEndRadius: 0,
 			borderBottomStartRadius: 0,
@@ -55,7 +58,7 @@ export default Detail = (props) => {
 		},
 		body: {
 			position:'absolute',
-			bottom:70,
+			bottom:68,
 			borderRadius:0 ,
 			backgroundColor:color,
 			marginLeft:15,
@@ -101,6 +104,11 @@ export default Detail = (props) => {
 		},
 		footerText: {
 			fontSize:13
+		},
+		statusText: {
+			textAlign: 'right',
+			color: 'rgba(255,255,255,0.4)',
+			fontWeight: 'bold'
 		}
 	})
 
@@ -127,11 +135,16 @@ export default Detail = (props) => {
 				</Card>
 
 				<Card appearance='filled' style={styles.body}>
-					<Text style={styles.bodyTitle}>{details.mag > 7 ? 'May Cause Danger':'No Danger'}</Text> 
-					<Text style={styles.bodySub}>Based on earthquake data, we determined that {details.mag > 7 ? 'derious damage might occur.':'no serious damage might occur.'}</Text> 
+					<Text style={styles.bodyTitle}>{details.sig > 600 ? '⚠ Dangerous':'No Danger'}</Text> 
+					<Text style={styles.bodySub}>Based on earthquake data, we determined that {details.sig > 600 ? 'the earthquake may cause facilities damage and casualities.':'no serious damage might occur.'}</Text> 
 					<Text style={styles.bodySub}>Depth: {depth.toFixed(3)} km</Text> 
 					<Text style={styles.bodySub}>Maximum Intensity: {details.mmi === null ? 0 : details.mmi} Gal</Text> 
-					<Text style={styles.bodySub}>Coordinates: ({lat.toFixed(3)}, {long.toFixed(3)})</Text>
+
+					<Grid>
+						<Col size={5}><Text style={styles.bodySub}>Coordinates: ({lat.toFixed(3)}, {long.toFixed(3)})</Text></Col>
+						<Col size={2} ><Text style={styles.statusText}>{details.status.toUpperCase()}</Text></Col>
+					</Grid>
+					
 				</Card>
 
 				<Card appearance='filled' style={styles.footer}>
@@ -170,7 +183,7 @@ export default Detail = (props) => {
 					}}
 					icon={() => <Image source={PinImage} style={{width:60, height:60}}/>}
 				>
-					<Text style={{color:'white'}}>{details.place}</Text>
+					<Text style={{color:'white', fontWeight: 'bold'}}>{details.place}</Text>
 				</MapView.Marker>
 
 				<MapView.Circle

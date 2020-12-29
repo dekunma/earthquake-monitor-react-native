@@ -1,10 +1,10 @@
 import React from 'react'
-import { View } from 'react-native'
+import { View, Text } from 'react-native'
 import { MapView, MapType } from "react-native-amap3d"
 import axios from 'axios'
 
 //ui kitten
-import { Icon, Text, TopNavigation, TopNavigationAction, Card, StyleService, useStyleSheet } from '@ui-kitten/components';
+import { Card, StyleService, useStyleSheet } from '@ui-kitten/components';
 
 // grid
 import { Row, Col, Grid } from "react-native-easy-grid";
@@ -16,7 +16,6 @@ export default About = () => {
     const yesterdayTime = new Date(currentTime)
     yesterdayTime.setDate(yesterdayTime.getDate() - 1)
     const startTime = yesterdayTime.getFullYear() + '-' + eval(yesterdayTime.getMonth() + 1) + '-' + yesterdayTime.getDate() + '-' + yesterdayTime.getHours() + '-' + yesterdayTime.getMinutes()
-    const minMag = 4.5
     const URL = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&limit=100'
 
     const [ earthquakeCount, setEarthquakeCount ] = React.useState(0)
@@ -26,17 +25,17 @@ export default About = () => {
     const [ theMaxAgo, setTheMaxAgo ] = React.useState(0)
     const [ averge, setAverge ] = React.useState(0)
     const [ placeArr, setPlaceArr ] = React.useState([])
-    const [ theMaxPlace, setTheMaxPlace ] = React.useState('')
+    const [ earthquakeData, setEarthquakeData ] = React.useState([])
+    const [ clickedPos, setClickedPos ] = React.useState('')
 
 
     React.useEffect(() => {
         let magSum = 0
         let newPlaceArr = []
-        let maxMag = 0
         let minMag = 12
-        let maxDepth = 0
         let maxAgo = 0
-        let maxPlace = ''
+        let maxMag = 0
+        let maxDepth = 0
         axios.get(`${URL}&minmagnitude=4.5&starttime=${startTime}&endtime=${endTime}`)
         .then(r => {
             const data = r.data.features
@@ -50,7 +49,6 @@ export default About = () => {
                     maxMag = currentProperties.mag
                     maxDepth = coordinates[2]
                     maxAgo = currentTime.getHours() - new Date(1609105154746).getHours()
-                    maxPlace = currentProperties.place
                 } 
             }
             setTheMaxMag(maxMag)
@@ -60,10 +58,15 @@ export default About = () => {
             setTheMaxDepth(maxDepth)
             setAverge((magSum / data.length).toFixed(1))
             setPlaceArr(newPlaceArr)
-            setTheMaxPlace(maxPlace)
+            setEarthquakeData(data)
         })
         
     }, [])
+
+    const handleItemClick = (ev) => {
+        const idx = placeArr.indexOf(ev)
+        setClickedPos(earthquakeData[idx].properties.place)
+    }
 
     const themedStyles = StyleService.create({
         card: {
@@ -99,27 +102,47 @@ export default About = () => {
         },
         totalEarthQuakeText: {
             color: 'white', 
-            fontSize: 15,
+            fontSize: 20,
             marginTop: 30
         },
         totalEarthQuakeNumber: {
             color: 'white', 
             fontWeight:'bold', 
-            fontSize: 20
+            fontSize: 30
         },
         theLargestText: {
             color: 'white', 
-            fontSize: 25,
+            fontSize: 20,
             marginTop: 10
         },
-        bottomNum: {
+        bottomNumLeft: {
             fontWeight: 'bold',
             fontSize: 30,
-            color: 'white'
+            color: 'white',
+            textAlign: 'left'
+        },
+        bottomNumRight: {
+            fontWeight: 'bold',
+            fontSize: 30,
+            color: 'white',
+            textAlign: 'right'
         },
         bottomText: {
             color: 'white',
             fontSize: 15
+        },
+        placeTextContainer: {
+            position: 'absolute',
+            top:15,
+            textAlign: 'center',
+            zIndex: 100,
+            width: '100%'
+        },
+        placeText: {
+            color: colors.yellow,
+            fontWeight: 'bold',
+            fontSize: 20,
+            textAlign: 'center'
         }
 	})
 
@@ -146,28 +169,29 @@ export default About = () => {
                             </Col>
 
                             <Col >
-                                {/* <Text style={styles.upperRightText}>Larger number left: average, upper right: maximum, lower right: minimum</Text> */}
+                                {/* placeholder */}
                             </Col>
                         </Row>
 
-                        <Text style={styles.totalEarthQuakeText}>In the past 24 hours, there are <Text style={styles.totalEarthQuakeNumber}>{earthquakeCount}</Text> big earthquakes globally</Text>
+                        <Text style={styles.totalEarthQuakeText}>In the past 24 hours, there were <Text style={styles.totalEarthQuakeNumber}>{earthquakeCount}</Text> big earthquakes globally</Text>
 
                         <Text style={styles.theLargestText}>The biggest one:</Text>
                         <Row>
-                            <Col>
-                                <Text style={styles.bottomNum}>{theMaxMag} <Text style={styles.bottomText}>mag</Text> </Text>
-                                
+                            <Col> 
+                                <Text style={styles.bottomNumLeft}>{theMaxMag} <Text style={styles.bottomText}>mag</Text></Text> 
                             </Col>
-                            <Col>
-                                <Text style={styles.bottomNum}>{theMaxDepth} <Text style={styles.bottomText}>km depth</Text> </Text>
-                                
+                            <Col> 
+                                <Text style={styles.bottomNumLeft}>{theMaxDepth} <Text style={styles.bottomText}>km deep</Text></Text> 
                             </Col>
-                            <Col>
-                                <Text style={styles.bottomNum}>{theMaxAgo} <Text style={styles.bottomText}>hours ago</Text> </Text>
-                                
+                            <Col> 
+                                <Text style={styles.bottomNumRight}>{theMaxAgo} <Text style={styles.bottomText}>hours ago</Text> </Text> 
                             </Col>
+
+                            {/* 为啥下面这种写法会crash掉整个program啊 */}
+                            {/* <Col> <Text style={styles.bottomNumLeft}>{theMaxMag} <Text style={styles.bottomText}>mag</Text></Text> </Col>
+                            <Col> <Text style={styles.bottomNumLeft}>{theMaxDepth} <Text style={styles.bottomText}>km deep</Text></Text> </Col>
+                            <Col> <Text style={styles.bottomNumRight}>{theMaxAgo} <Text style={styles.bottomText}>hours ago</Text> </Text> </Col> */}
                         </Row>
-                        
                     </Grid>
 				</Card>
 			</>
@@ -177,6 +201,10 @@ export default About = () => {
     return(
         <>  
             <RenderCard />
+            <View style={styles.placeTextContainer}>
+                <Text style={styles.placeText}>{clickedPos}</Text>
+            </View>
+            
             <MapView
                 locationEnabled
                 mapType={MapType.Standard}
@@ -192,14 +220,13 @@ export default About = () => {
             >
                 <MapView.MultiPoint
                     points={placeArr}
+                    onItemPress={ev => handleItemClick(ev)}
                 />
             </MapView>
-                
-             
         </>
     )
 }
 
 const colors = {
-	yellow: '#F7CE45'
+	yellow: '#fcca42'
 }

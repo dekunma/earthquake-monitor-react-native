@@ -23,16 +23,39 @@ import store from './store'
 // pop up
 import { Root } from 'popup-ui'
 
+// configure color scheme
+import { Appearance, useColorScheme } from 'react-native-appearance';
+
+/**
+ * Get the current color scheme
+ */
+Appearance.getColorScheme();
+
 const Stack = createStackNavigator();
 
 const App = () => {
+
+	const colorScheme = useColorScheme();
+
+	/**
+	 * Subscribe to color scheme without a hook
+	 */
+	const subscription = Appearance.addChangeListener(({ colorScheme }) => {
+		setCurrentColorScheme(colorScheme)
+	});
+
+	const [ currentColorScheme, setCurrentColorScheme ] = React.useState('light');
+
+	React.useEffect(() => {
+		setCurrentColorScheme(colorScheme)
+	}, [])
 
     return(
 		<Provider store={store}>
 			<IconRegistry icons={EvaIconsPack} />
 				<ApplicationProvider 
 					{...eva} 
-					theme={eva.light}
+					theme={currentColorScheme === 'light' ? eva.light : eva.dark}
 				>
 					{/* Root for Toast (bottom pop up) */}
 					<Root>
