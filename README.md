@@ -9,11 +9,11 @@ Get earthquake information across the world in time
 
 ## Screenshots  
 <div>
-    <img src="https://i.loli.net/2020/12/31/Ks2nHjkqmM5U61d.png" width="200">
-    <img src="https://i.loli.net/2020/12/31/YIin6lGBTFRdx7y.png" width="200">
-    <img src="https://i.loli.net/2020/12/31/SMP8t6fZY9J3b7O.png" width="200">
-    <img src="https://i.loli.net/2020/12/31/cXfaiHQW3jlxGg8.png" width="200">
-    <img src="https://i.loli.net/2020/12/31/2JY79UsobhEK3RP.png" width="200">
+    <img src="https://i.loli.net/2020/12/31/Ks2nHjkqmM5U61d.png" width="300">
+    <img src="https://i.loli.net/2020/12/31/YIin6lGBTFRdx7y.png" width="300">
+    <img src="https://i.loli.net/2020/12/31/SMP8t6fZY9J3b7O.png" width="300">
+    <img src="https://i.loli.net/2020/12/31/cXfaiHQW3jlxGg8.png" width="300">
+    <img src="https://i.loli.net/2020/12/31/2JY79UsobhEK3RP.png" width="300">
 </div>
 <br/>
 <br/>
