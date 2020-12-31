@@ -1,6 +1,6 @@
 # Earthquake Monitor  
 ![header](https://i.loli.net/2020/12/31/s3XIMqFe67YLuQl.png)  
-[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs) [![Open Source](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://opensource.org/)
+[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/dekunma/EarthquakeMonitor-ReactNative/blob/master/LICENSE) [![Open Source](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://opensource.org/)
 [![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)  
 **An android developed using React Native**  
 Get earthquake information across the world in time    
@@ -9,11 +9,11 @@ Get earthquake information across the world in time
 
 ## Screenshots  
 <div>
-    <img src="https://i.loli.net/2020/12/31/Ks2nHjkqmM5U61d.png" width="300">
-    <img src="https://i.loli.net/2020/12/31/YIin6lGBTFRdx7y.png" width="300">
-    <img src="https://i.loli.net/2020/12/31/SMP8t6fZY9J3b7O.png" width="300">
-    <img src="https://i.loli.net/2020/12/31/cXfaiHQW3jlxGg8.png" width="300">
-    <img src="https://i.loli.net/2020/12/31/2JY79UsobhEK3RP.png" width="300">
+    <img src="https://i.loli.net/2020/12/31/Ks2nHjkqmM5U61d.png" width="200">
+    <img src="https://i.loli.net/2020/12/31/YIin6lGBTFRdx7y.png" width="200">
+    <img src="https://i.loli.net/2020/12/31/SMP8t6fZY9J3b7O.png" width="200">
+    <img src="https://i.loli.net/2020/12/31/cXfaiHQW3jlxGg8.png" width="200">
+    <img src="https://i.loli.net/2020/12/31/2JY79UsobhEK3RP.png" width="200">
 </div>
 <br/>
 <br/>
