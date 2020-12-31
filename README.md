@@ -2,7 +2,7 @@
 ![header](https://i.loli.net/2020/12/31/s3XIMqFe67YLuQl.png)  
 [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/dekunma/EarthquakeMonitor-ReactNative/blob/master/LICENSE) [![Open Source](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://opensource.org/)
 [![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)  
-**An android developed using React Native**  
+**An android app developed using React Native**  
 Get earthquake information across the world in time    
 <br/>
 <br/>
