@@ -21,7 +21,7 @@
     "@reduxjs/toolkit": "^1.4.0",
     "@ui-kitten/components": "^5.0.0",
     "@ui-kitten/eva-icons": "^5.0.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "moment": "^2.27.0",
     "popup-ui": "^1.2.2",
     "react": "16.13.1",
