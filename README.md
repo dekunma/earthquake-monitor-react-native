@@ -87,7 +87,6 @@ The API is provided by [US Geological Survey](https://earthquake.usgs.gov/fdsnws
 ## Special Thanks  
 - [老腊肉](https://github.com/laolarou726)  
 - [Jimmy Keesee](https://github.com/keesee)    
-- My girl friend who does not have a Github account : )  
 <br/>
 <br/>
   
